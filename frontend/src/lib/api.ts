@@ -1,83 +1,51 @@
-// const BACKEND_URL =
-//   process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:9000";
+// Здесь позже будет реальный доступ к бэкенду.
+// Пока что экспортируем тип и мок‑данные, чтобы верстка и типы работали.
 
-// const PUBLISHABLE_KEY =
-//   process.env.NEXT_PUBLIC_API_PUBLISHABLE_KEY || "";
+export interface Product {
+  id: string;
+  title: string;
+  subtitle?: string;
+  thumbnail?: string;
 
-// const PRODUCTS_ENDPOINT =
-//   process.env.NEXT_PUBLIC_PRODUCTS_ENDPOINT || "/store/products";
+  price?: number;
+  currency?: string;
 
-// export interface Product {
-//   id: string;
-//   title: string;
-//   subtitle?: string;
-//   thumbnail?: string;
+  raw: unknown;
+}
 
-//   price?: number;
-//   currency?: string;
+// Временные заглушки продуктов
+export const mockProducts: Product[] = [
+  {
+    id: "1",
+    title: "Курс по JavaScript",
+    subtitle: "С нуля до первых проектов",
+    thumbnail: "/next.svg",
+    price: 199,
+    currency: "€",
+    raw: {},
+  },
+  {
+    id: "2",
+    title: "Курс по Python",
+    subtitle: "Автоматизация и бэкенд",
+    thumbnail: "/next.svg",
+    price: 249,
+    currency: "€",
+    raw: {},
+  },
+  {
+    id: "3",
+    title: "Курс по UX/UI",
+    subtitle: "Дизайн интерфейсов",
+    thumbnail: "/next.svg",
+    price: 149,
+    currency: "€",
+    raw: {},
+  },
+];
 
-//   raw: unknown;
-// }
-
-// type BackendProduct = {
-//   id?: string | number;
-//   title?: string;
-//   subtitle?: string;
-//   thumbnail?: string;
-//   variants?: Array<{
-//     prices?: Array<{
-//       amount?: number;
-//       currency_code?: string;
-//     }>;
-//   }>;
-// };
-
-// function normalizeProduct(apiProduct: BackendProduct): Product {
-//   const variant = apiProduct?.variants?.[0];
-//   const priceObj = variant?.prices?.[0];
-
-//   const amount =
-//     typeof priceObj?.amount === "number" ? priceObj.amount : undefined;
-//   const currency =
-//     typeof priceObj?.currency_code === "string"
-//       ? priceObj.currency_code
-//       : undefined;
-
-//   return {
-//     id: String(apiProduct.id ?? ""),
-//     title: apiProduct.title ?? "",
-//     subtitle: apiProduct.subtitle ?? "",
-//     thumbnail: apiProduct.thumbnail ?? "",
-//     price: typeof amount === "number" ? amount / 100 : undefined,
-//     currency,
-//     raw: apiProduct,
-//   };
-// }
-
-// export async function getProducts() {
-//   try {
-//     const response = await fetch(`${BACKEND_URL}${PRODUCTS_ENDPOINT}`, {
-//       cache: "no-store",
-//       headers: {
-//         ...(PUBLISHABLE_KEY
-//           ? { "x-publishable-api-key": PUBLISHABLE_KEY }
-//           : {}),
-//       },
-//     });
-
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       console.error(`API error: ${response.status}`, errorData);
-//       return [];
-//     }
-
-//     const data = await response.json();
-//     const products = Array.isArray(data?.products) ? data.products : [];
-
-//     return products.map(normalizeProduct);
-//   } catch {
-//     console.error("Could not connect to backend");
-//     return [];
-//   }
-// }
+// Заглушка под будущий вызов API
+export async function getProducts() {
+  return mockProducts;
+}
 

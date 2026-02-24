@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import HeroImage from '@/assets/HeroImage.png'
 import { useLanguage } from "@/lib/LanguageContext";
@@ -68,10 +69,13 @@ export const Hero = ({ metadata = {} }: HeroProps) => {
             </div>
 
             <div className={styles.heroActions}>
-                <Button variant="primary" size="lg" rounded="full">
-                    {getDynamic("browseCourses", tr.browseCourses)}
-                </Button>
+                <Link href="/courses">
+                    <Button variant="primary" size="lg" rounded="full">
+                        {getDynamic("browseCourses", tr.browseCourses)}
+                    </Button>
+                </Link>
             </div>
+            <div></div>
         </section>
     );
 };
