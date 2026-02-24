@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## Frontend `iet-shop` (Next.js)
 
 The frontend is a **Next.js 16 / React 19** application located in the `frontend` folder.  
@@ -97,9 +96,3 @@ docker run --rm -p 3000:3000 \
 You can add more environment variables if needed (`NEXT_PUBLIC_PRODUCTS_ENDPOINT`, etc.).
 
 ---
-
-
-
-=======
-Сюда пойдет небольшая документация по фронтенду
->>>>>>> d330084923a82f2ab4d415806bd9a2b02a5599d7

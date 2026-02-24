@@ -1,13 +1,8 @@
 ### Deployment (Docker)
 
-Проект запускается из корня через Docker Compose. На текущем этапе поднимается только backend (Django).
+Проект запускается из корня через Docker Compose.
 
-#### Требования
-- Docker
-- Docker Compose
-
-
-Запуск
+#### Запуск
 ``` bash
 docker compose up --build
 ```
@@ -18,6 +13,8 @@ http://localhost:8000
 Документация API:
 http://localhost:8000/api/docs/
 
+Фронтенд:
+http://localhost:3000
 
 #### Остановка
 ``` bash
