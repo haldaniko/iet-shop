@@ -1,0 +1,102 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.menu {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    z-index: 100;
+    min-width: unset;
+    background-color: $color-white;
+    border-radius: $radius-xl;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border: 1px solid $color-border;
+    padding: 0.25rem 0.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    transform-origin: top;
+    animation: dropdownContentShow 0.2s ease-out;
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    //right: 0;
+}
+
+.langFlag {
+    @include button-reset;
+    @include flex-center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    @include transition-standard;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: none;
+    padding: 0;
+    border: none;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+}
+
+.langOption {
+    @include button-reset;
+    @include flex-center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    @include transition-standard;
+    flex-shrink: 0;
+    background: none;
+    padding: 0;
+    border: none;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+}
+
+@keyframes dropdownContentShow {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

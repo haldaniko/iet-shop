@@ -1,0 +1,11 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.wrapper {
+    display: none;
+    padding-left: 0.5rem;
+
+    @media (min-width: 640px) {
+        display: block;
+    }
+}

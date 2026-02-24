@@ -1,0 +1,73 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+    padding: 1.5rem 1.75rem;
+}
+
+.container {
+    @include container;
+    padding: 0;
+    max-width: $container-max-width;
+}
+
+.inner {
+    @include flex-between;
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+    background-color: $color-white;
+    border-radius: $radius-2xl;
+    box-shadow: $shadow-lg;
+    border: 1px solid $color-border;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.logo {
+    @include flex-center;
+    width: 110px;
+    height: 48px;
+    background-color: #E5E5E5;
+    border-radius: 12px;
+    flex-shrink: 0;
+    cursor: pointer;
+
+    span {
+        font-size: 12px;
+        font-weight: 700;
+        color: #555;
+        letter-spacing: -0.025em;
+    }
+}
+
+.navbarHidden {
+    display: none;
+
+    @media (min-width: 1024px) {
+        display: block;
+    }
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.actionIcon {
+    color: $color-text;
+    @include transition-standard;
+    cursor: pointer;
+
+    &:hover {
+        color: $color-black;
+    }
+}

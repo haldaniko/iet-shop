@@ -1,0 +1,93 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.hero {
+    padding: 4.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.heroContent {
+    @include container;
+    padding: 0 10rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        gap: 4rem;
+    }
+}
+
+.heroContentLeft {
+    flex: 1;
+    max-width: 600px;
+}
+
+.heroTitle {
+    font-family: $font-rubik;
+    font-size: 2.375rem;
+    line-height: 1.1;
+    font-weight: 700;
+    color: $color-black-second;
+    margin: 0;
+    margin-bottom: 2rem;
+    margin-top: 0;
+
+    .heroTitleHighlight {
+        color: $color-accent;
+        display: block; // technology on its own line
+    }
+}
+
+.heroDescription {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: rgba($color-black-second, 0.7);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+
+    .heroDescriptionHighlight {
+        color: $color-accent;
+        font-weight: 500;
+    }
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0.2rem;
+    font-weight: 500;
+    color: $color-black-second;
+
+    .locationIcon {
+        color: $color-black;
+    }
+}
+
+.heroContentRight {
+    flex: 1;
+    @include flex-center;
+    min-height: 300px;
+}
+
+.imageWrapper {
+    position: relative;
+    width: 35rem;
+    height: 35rem;
+}
+
+.heroImage {
+    object-fit: contain;
+}
+
+.heroActions {
+    @include flex-center;
+    width: 100%;
+}

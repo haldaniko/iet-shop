@@ -1,0 +1,72 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.dropdownWrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.trigger {
+    @include button-reset;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    &:focus-visible {
+        outline: 2px solid $color-blue;
+    }
+}
+
+.menu {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    z-index: 100;
+    min-width: 180px;
+    background-color: $color-white;
+    border-radius: $radius-xl;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border: 1px solid $color-border;
+    padding: 0.5rem 0;
+    overflow: hidden;
+    transform-origin: top;
+    animation: dropdownContentShow 0.2s ease-out;
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+}
+
+.item {
+    @include button-reset;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: $color-text;
+    @include transition-standard;
+
+    &:hover {
+        background-color: $color-bg;
+    }
+}
+
+@keyframes dropdownContentShow {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

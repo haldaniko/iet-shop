@@ -1,0 +1,17 @@
+
+frontend/node_modules/
+
+
+.next/
+out/
+build/
+
+*.tsbuildinfo
+
+npm-debug.log*
+
+.vscode/
+*.swp
+*.swo
+
+

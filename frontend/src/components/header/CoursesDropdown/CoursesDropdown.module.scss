@@ -1,0 +1,28 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+/* Trigger link styling – matches other navbar links */
+.navLink {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 15px;
+    font-weight: 700;
+    color: $color-black;
+    @include transition-standard;
+    cursor: pointer;
+    position: relative;
+
+    &::after {
+        content: "";
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 6px solid $color-black;
+        margin-left: 4px;
+        transition: transform 0.2s;
+    }
+
+    &:hover::after {
+        transform: rotate(180deg);
+    }
+}

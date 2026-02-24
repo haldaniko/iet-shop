@@ -1,0 +1,53 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $color-bg;
+    color: $color-text;
+    font-family: $font-roboto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h3 {
+    font-family: $font-rubik;
+    font-size: 2.375rem; // 38px
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+    font: inherit;
+}
+
+[role="button"],
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+.container {
+    @include container;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
