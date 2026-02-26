@@ -7,7 +7,9 @@ const imageHostnames = IMAGE_HOSTNAMES.split(",")
   .filter(Boolean);
 
 const nextConfig: NextConfig = {
+  output: "export",
   images: {
+    unoptimized: true,
     remotePatterns: imageHostnames.map((hostname) => ({
       protocol: "https",
       hostname,

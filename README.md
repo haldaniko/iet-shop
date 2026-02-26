@@ -2,9 +2,9 @@
 
 Проект запускается из корня через Docker Compose.
 
-#### Запуск
+#### Запуск (dev)
 ``` bash
-docker compose up --build
+docker compose -f docker-compose.dev.yml up --build
 ```
 
 Backend: 
@@ -18,11 +18,20 @@ http://localhost:3000
 
 #### Остановка
 ``` bash
-docker compose down
+docker compose -f docker-compose.dev.yml down
 ```
 
 #### Пересборка после изменений зависимостей
 ```  bash
-docker compose build --no-cache
-docker compose up
+docker compose -f docker-compose.dev.yml up --build --no-cache
+```
+
+#### Запуск на VPS (prod, сборка локально из проекта)
+```bash
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+#### Остановка на VPS (prod)
+```bash
+docker compose -f docker-compose.prod.yml down
 ```
