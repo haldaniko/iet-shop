@@ -25,15 +25,17 @@ export const Header = () => {
 
                     {/* ACTIONS */}
                     <div className={styles.actions}>
-                        <Link href="/cart" className={styles.actionIcon}>
-                            <IconBag />
-                        </Link>
+                        <div className={styles.userGroup}>
+                            <Link href="/cart" className={styles.actionIcon}>
+                                <IconBag />
+                            </Link>
 
-                        <LanguageDropdown />
+                            <LanguageDropdown />
 
-                        <Link href="/account" className={styles.actionIcon}>
-                            <IconUser />
-                        </Link>
+                            <Link href="/account" className={styles.actionIcon}>
+                                <IconUser />
+                            </Link>
+                        </div>
 
                         <RequestButton />
                     </div>

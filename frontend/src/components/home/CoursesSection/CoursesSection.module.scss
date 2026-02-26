@@ -1,0 +1,197 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.coursesSection {
+    //padding: 0 0 6rem 0;
+    background-color: $color-white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.container {
+    @include container;
+    padding: 60px 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    background-color: #F5F6FA;
+    border-radius: 48px;
+}
+
+.head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.topSeparator {
+    width: 20px;
+    height: 2px;
+    background-color: #38BDF8;
+}
+
+.bottomSeparator {
+    width: 25px;
+    height: 2px;
+    background-color: #F472B6;
+}
+
+.title {
+    font-family: $font-roboto-flex;
+    font-size: var(--font-size-2xl, 48px);
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.96px;
+    color: $color-black;
+    margin: 0;
+}
+
+.tipBlock {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.tipContent {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 500px;
+    text-align: left;
+}
+
+.tipIcon {
+    color: #EF4444;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.tipText {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: $color-black;
+    font-weight: 400;
+}
+
+.tipTitle {
+    font-weight: 700;
+}
+
+.helpContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.helpTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 600px;
+
+    .tag {
+        padding: 10px 24px;
+        background: #E2E8F0;
+        border-radius: 8px;
+        font-size: 1.125rem;
+        color: $color-black;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            background: #CBD5E1;
+        }
+
+        &.active {
+            background: #5A55F4;
+            color: white;
+        }
+    }
+}
+
+.helpContact {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 100%;
+    max-width: 530px;
+    background-color: #F8FAFC;
+    border-radius: 28px;
+    padding: 24px 150px 32px 32px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    min-height: 140px;
+}
+
+.helpTextWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.helpSubtitle {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0;
+    color: $color-black;
+}
+
+.helpDescription {
+    font-size: 1.125rem;
+    color: #64748B;
+    margin: 0;
+}
+
+.helpLink {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 78px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.coursesGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 100%;
+    margin-top: 3rem;
+
+    @media (max-width: 1200px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// .title, 
+// .statCount {
+//     font-family: $font-roboto-flex;
+//     font-size: 3.5rem;
+//     font-weight: 500;
+//     line-height: 1.1;
+//     color: $color-black-second;
+// }

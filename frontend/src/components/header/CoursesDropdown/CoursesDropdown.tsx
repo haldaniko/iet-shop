@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { Dropdown, DropdownItem } from "@/components/ui/Dropdown/Dropdown";
 import { useLanguage } from "@/lib/LanguageContext";
-import { t } from "@/lib/translations";
+import { translations } from "./translations";
 import styles from "./CoursesDropdown.module.scss";
 
 export const CoursesDropdown = () => {
     const { lang } = useLanguage();
-    const tr = t[lang];
+    const tr = translations[lang];
 
     const courseLinks = [
         { label: tr.allCourses, href: "/courses" },

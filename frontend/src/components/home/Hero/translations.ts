@@ -7,6 +7,7 @@ export const translations = {
         heroDescriptionEnd: "in today's job market.",
         location: "Sofia, Bulgaria",
         browseCourses: "Browse Courses",
+        mainTitleBlock: "Innovative Educational Technologies",
     },
     bg: {
         heroTitle: "Започни своето пътешествие в",
@@ -16,5 +17,6 @@ export const translations = {
         heroDescriptionEnd: "на днешния пазар на труда.",
         location: "София, България",
         browseCourses: "Разгледай курсовете",
+        mainTitleBlock: "Иновативни образователни технологии",
     },
 };

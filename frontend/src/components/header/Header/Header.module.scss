@@ -6,13 +6,13 @@
     top: 0;
     z-index: 50;
     width: 100%;
-    padding: 1.5rem 1.75rem;
+    padding: 1.5rem 0 0;
+    display: flex;
+    justify-content: center;
 }
 
 .container {
     @include container;
-    padding: 0;
-    max-width: $container-max-width;
 }
 
 .inner {
@@ -33,15 +33,15 @@
 
 .logo {
     @include flex-center;
-    width: 110px;
-    height: 48px;
+    width: 6.875rem;
+    height: 3rem;
     background-color: #E5E5E5;
-    border-radius: 12px;
+    border-radius: 0.75rem;
     flex-shrink: 0;
     cursor: pointer;
 
     span {
-        font-size: 12px;
+        font-size: 0.75rem;
         font-weight: 700;
         color: #555;
         letter-spacing: -0.025em;
@@ -62,10 +62,25 @@
     gap: 1.5rem;
 }
 
+.userGroup {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
 .actionIcon {
     color: $color-text;
     @include transition-standard;
+    @include flex-center;
+    width: 24px;
+    height: 24px;
     cursor: pointer;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 
     &:hover {
         color: $color-black;

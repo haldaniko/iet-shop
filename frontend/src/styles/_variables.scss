@@ -5,9 +5,8 @@ $color-black-second: #231F20;
 $color-gray: #D9D9D9;
 
 $color-blue: #48EEFF;
-$color-accent: #FF7262;
-
-
+$color-accent: #EB4335;
+$color-dark-blue: #22262F;
 
 // Branding
 $color-primary: $color-black;
@@ -17,10 +16,24 @@ $color-border: $color-gray;
 
 // Typography
 $font-roboto: var(--font-roboto), sans-serif;
+$font-roboto-flex: var(--font-roboto-flex), sans-serif;
 $font-rubik: var(--font-rubik), sans-serif;
 
+// Font Sizes (Standardized)
+$font-size-xs: 18px;
+$font-size-s: 20px;
+$font-size-2xl: 48px;
+$font-size-3xl: 56px;
+
+:root {
+    --font-size-xs: #{$font-size-xs};
+    --font-size-s: #{$font-size-s};
+    --font-size-2xl: #{$font-size-2xl};
+    --font-size-3xl: #{$font-size-3xl};
+}
+
 // Spacing & Layout
-$container-max-width: 1440px;
+$container-max-width: 87rem;
 $header-height: 72px;
 $radius-xl: 12px;
 $radius-2xl: 24px;

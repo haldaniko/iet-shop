@@ -1,0 +1,201 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.section {
+    padding: 100px 0 60px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    @include container;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 507px;
+    width: 100%;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 54px;
+}
+
+.title {
+    // Uses global H2 style
+    margin-bottom: 12px;
+}
+
+.description {
+    // Uses body style
+    color: #64748B;
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.field {
+    width: 100%;
+    padding: 16px 24px;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    font-size: 16px;
+    color: #1E293B;
+    background-color: #FFFFFF;
+    transition: all 0.2s ease;
+    outline: none;
+
+    &:focus {
+        border-color: #5A55F4;
+        box-shadow: 0 0 0 4px rgba(90, 85, 244, 0.05);
+    }
+
+    &::placeholder {
+        color: #94A3B8;
+    }
+
+    &.hasError {
+        border-color: $color-accent;
+    }
+}
+
+.phoneFieldWrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    background-color: #FFFFFF;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+        border-color: #5A55F4;
+        box-shadow: 0 0 0 4px rgba(90, 85, 244, 0.05);
+    }
+
+    &.hasError {
+        border-color: $color-accent;
+    }
+}
+
+.flagWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: #F1F5F9;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.flag {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.countryCode {
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
+}
+
+.phoneInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #1E293B;
+    padding: 8px 0;
+
+    &::placeholder {
+        color: #94A3B8;
+    }
+}
+
+.errorText {
+    color: $color-accent;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.privacy {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkboxWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #E2E8F0;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &.checked {
+        background-color: #5A55F4;
+        border-color: #5A55F4;
+    }
+}
+
+.checkIcon {
+    width: 12px;
+    height: 12px;
+    color: white;
+}
+
+.privacyText {
+    font-size: 14px;
+    color: #475569;
+    line-height: normal;
+}
+
+.link {
+    color: #5A55F4;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.submitWrapper {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.submitButton {
+    min-width: 212px;
+}
+
+.successMessage {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background-color: #ECFDF5;
+    border: 1px solid #10B981;
+    color: #065F46;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 500;
+}
