@@ -85,7 +85,7 @@ export const ConsultationSection = () => {
   }
 
   return (
-    <section className={styles.section}>
+    <section id="consultation" className={styles.section}>
       <div className={styles.container}>
         <header className={styles.header}>
           <h2 className={styles.title}>{t.title}</h2>

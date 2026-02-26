@@ -1,0 +1,50 @@
+@use "../../../styles/variables" as *;
+
+.navigation {}
+
+.navList {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    gap: 8px;
+}
+
+.navArrow {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.7;
+    }
+
+    &:first-child {
+        margin-right: 14px;
+    }
+
+    &:last-child {
+        margin-left: 14px;
+    }
+
+    svg {
+        display: block;
+    }
+}
+
+.dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.activeDot {
+        background-color: #212631;
+    }
+}

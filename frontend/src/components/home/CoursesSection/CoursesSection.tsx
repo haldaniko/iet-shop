@@ -53,7 +53,7 @@ export const CoursesSection = () => {
               <p className={styles.helpDescription}>{t.helpDecidingText}</p>
             </div>
 
-            <Link href="#contact" className={styles.helpLink} aria-label="Contact us">
+            <Link href="#consultation" className={styles.helpLink} aria-label="Contact us">
               <IconHelpBtn />
             </Link>
           </div>

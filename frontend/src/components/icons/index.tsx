@@ -96,3 +96,14 @@ export const IconArrowRight = ({ className }: { className?: string }) => (
         <path d="M1.59597 1C4.13084 2.95714 8.00862 6.9494 9.37135 8.62127C9.69403 9.01714 9.98651 9.4021 10.0002 9.83342C8.07269 11.6293 4.39979 12.9453 2.71209 14.0073C2.26938 14.2871 1.79764 14.567 1.00018 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
 )
+export const IconArrowDown = ({ className }: { className?: string }) => (
+    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.0002 1.59578C13.043 4.13065 9.05078 8.00844 7.37892 9.37117C6.98304 9.69384 6.59809 9.98632 6.16677 10C4.37091 8.0725 3.0549 4.39961 1.99289 2.7119C1.71308 2.26919 1.4332 1.79746 1.00018 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+)
+
+export const IconExternalLink = ({ className }: { className?: string }) => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+)
