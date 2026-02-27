@@ -1,0 +1,45 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.advantagesSection {
+    //padding: 0 0 6rem 0;
+    background-color: $color-white;
+    margin-bottom: 40px;
+}
+
+.cardContainer {
+    @include container;
+    padding: 0 44px;
+}
+
+.header {
+    margin-bottom: 4rem;
+    padding-left: 71px;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 500;
+    color: $color-black;
+    margin-bottom: 1.5rem;
+}
+
+.subtitle {
+    @include subtitle;
+    color: $color-accent;
+    font-size: 3rem;
+}
+
+.gridWrapper {
+    width: 100%;
+    margin-top: 3rem;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+    align-items: stretch;
+}

@@ -3,33 +3,31 @@
 import Link from "next/link";
 import { CoursesDropdown } from "@/components/header/CoursesDropdown/CoursesDropdown";
 import { useLanguage } from "@/lib/LanguageContext";
-import { t } from "@/lib/translations";
 import { NavLinks, type SimpleLink } from "@/components/ui/NavLinks/NavLinks";
+import { translations } from "./translations";
 import styles from "./Navbar.module.scss";
 
+type NavKey = keyof typeof translations.en;
+
 interface NavLink {
-  key: keyof typeof t.en;
+  key: NavKey;
   href: string;
-  hasDropdown: boolean;
 }
 
 const navLinks: NavLink[] = [
-  { key: "courses", href: "/courses", hasDropdown: true },
-  { key: "events", href: "/events", hasDropdown: false },
-  { key: "blog", href: "/blog", hasDropdown: false },
-  { key: "contact", href: "/contact", hasDropdown: false },
+  { key: "events", href: "/events" },
+  { key: "blog", href: "/blog" },
+  { key: "contact", href: "/contact" },
 ];
 
 export const Navbar = () => {
   const { lang } = useLanguage();
-  const tr = t[lang];
+  const tr = translations[lang];
 
-  const simpleLinks: SimpleLink[] = navLinks
-    .filter((link) => !link.hasDropdown)
-    .map((link) => ({
-      label: tr[link.key],
-      href: link.href,
-    }));
+  const simpleLinks: SimpleLink[] = navLinks.map((link) => ({
+    label: tr[link.key],
+    href: link.href,
+  }));
 
   return (
     <nav className={styles.nav}>

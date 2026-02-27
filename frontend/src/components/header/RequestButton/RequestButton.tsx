@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
-import { t } from "@/lib/translations";
 import { Button } from "@/components/ui/Button/Button";
+import { translations } from "./translations";
 import styles from "./RequestButton.module.scss";
 
 export const RequestButton = () => {
     const router = useRouter();
     const { lang } = useLanguage();
+    const tr = translations[lang];
 
     return (
         <div className={styles.wrapper}>
@@ -18,7 +19,7 @@ export const RequestButton = () => {
                 rounded="full"
                 onClick={() => router.push("/contact")}
             >
-                {t[lang].leaveRequest}
+                {tr.leaveRequest}
             </Button>
         </div>
     );

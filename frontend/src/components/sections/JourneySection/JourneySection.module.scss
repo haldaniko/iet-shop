@@ -1,0 +1,188 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.journeySection {
+    padding: 0 44px;
+    margin-bottom: 40px;
+}
+
+.header {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+}
+
+.container {
+    @include container;
+    background-color: #2D3139;
+    border-radius: 48px;
+    padding: 60px 44px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subtitle {
+    width: 100%;
+    white-space: nowrap;
+    text-align: right;
+    @include subtitle;
+    color: $color-accent;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    width: 100%;
+    white-space: nowrap;
+    font-size: 48px;
+    font-weight: 500;
+    color: #FFFFFF;
+}
+
+.highlight {
+    color: $color-accent;
+    display: block;
+}
+
+.mainGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    align-items: start;
+}
+
+.leftDecoration {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-self: stretch;
+}
+
+.decorationLabel {
+    font-family: cursive;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    font-style: italic;
+    margin: 0;
+}
+
+.imageBox {
+    position: relative;
+    width: 250px;
+    height: 180px;
+    border-radius: 20px;
+    overflow: hidden;
+
+    .stepImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.curveLineLeft {
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    width: 150px;
+    height: 100px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50% / 100% 100% 0 0;
+    border-bottom: none;
+    transform: rotate(150deg);
+}
+
+.centerSection {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.progressBarWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.progressBar {
+    width: 60px;
+    height: 533px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--progress, 0%);
+        background: linear-gradient(180deg, #F87171 0%, #A78BFA 50%, #3B82F6 100%);
+        transition: height 1.8s ease-in-out;
+    }
+}
+
+.emoji {
+    position: absolute;
+    top: var(--emoji-pos, -20px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    z-index: 2;
+    transition: top 1.8s ease-in-out;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+
+.stepsList {
+    display: flex;
+    flex-direction: column;
+    gap: 140px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.stepItem {
+    font-size: 1.75rem;
+    font-weight: 500;
+}
+
+.rightDecoration {
+    display: flex;
+    flex-direction: column;
+    gap: 12rem;
+    align-items: flex-end;
+}
+
+.decorationBox {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.imageBoxSmall {
+    width: 220px;
+    height: 150px;
+    border-radius: 20px;
+    overflow: hidden;
+
+    .stepImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}

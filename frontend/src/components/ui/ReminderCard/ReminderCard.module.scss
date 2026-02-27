@@ -1,0 +1,41 @@
+@use "../../../styles/variables" as *;
+
+.card {
+    display: flex;
+    align-items: stretch;
+    gap: 34px;
+    width: 100%;
+}
+
+.iconWrapper {
+    width: 56px;
+    height: 56px;
+    background-color: #D9D9D9;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.content {
+    border-radius: 48px 48px 48px 0;
+    background-color: #5A55F4;
+    padding: 16px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 364px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.text {
+    font-size: 16px;
+    font-weight: 400;
+    opacity: 0.9;
+    margin: 0;
+}

@@ -1,0 +1,109 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.faqSection {
+    margin-bottom: 40px; 
+    padding: 24px 0 40px 0;
+}
+
+
+.container {
+    @include container;
+    text-align: center;
+    position: relative;
+
+    h2 {
+        margin-bottom: 12px;
+        font-size: 48px;
+        font-weight: 400;
+        color: #000;
+    }
+
+}
+
+.faqList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 44px 0;
+    list-style: none;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.faqItemWrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    width: 910px; // 858px + gap + decor
+}
+
+.decorations {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    flex-shrink: 0;
+}
+
+.decorLarge {
+    width: 20px;
+    height: 20px;
+    background: #F5F6FA;
+    border-radius: 6px;
+}
+
+.decorSmall {
+    width: 12px;
+    height: 12px;
+    background: #F5F6FA;
+    border-radius: 4px;
+}
+
+.faqItem {
+    flex: 1;
+    padding: 12px 24px;
+    border-radius: 27px;
+    border: 2px solid #DAE2FF;
+    background: #F5F6FA;
+    cursor: pointer;
+}
+
+.faqQuestion {
+    color: #000;
+    font-family: var(--font-family-body, Rubik);
+    font-size: var(--font-size-m, 24px);
+    font-weight: 500;
+}
+
+.faqAnswer {
+    margin-top: 12px;
+    font-size: 18px;
+    color: #333;
+}
+
+.bottomContent {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 40px;
+    position: relative;
+    width: 858px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.reminderCard {
+    width: auto;
+}
+
+.bottomDecor {
+    width: 90px;
+    height: 90px;
+    background: #EDEDED;
+    border-radius: 50%;
+    position: absolute;
+    left: -100px;
+    bottom: -10px;
+}

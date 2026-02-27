@@ -13,7 +13,6 @@ export interface Product {
   raw: unknown;
 }
 
-// Временные заглушки продуктов
 export const mockProducts: Product[] = [
   {
     id: "1",

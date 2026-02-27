@@ -1,0 +1,61 @@
+@use "../../../styles/variables" as *;
+
+.card {
+    width: 240px;
+    min-width: 240px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 8px;
+    border-radius: 24px;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+    color: #475569;
+
+    // Stretch to match tallest card in flex row
+    height: auto;
+    align-self: stretch;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: inherit;
+    margin: 0;
+    flex: 1;
+}
+
+.iconWrapper {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    margin-top: -10px;
+    margin-right: 20px;
+
+    img {
+        object-fit: contain;
+    }
+}
+
+.description {
+    font-size: 20px;
+    line-height: 1.4;
+    color: inherit;
+    margin: 0;
+    font-weight: 400;
+}

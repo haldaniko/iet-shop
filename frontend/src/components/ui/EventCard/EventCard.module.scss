@@ -1,0 +1,80 @@
+@use "../../../styles/variables" as *;
+
+.card {
+    background: #FFFFFF;
+    border-radius: 40px;
+    padding: 24px 44px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 16px;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+.left {
+    flex-shrink: 0;
+}
+
+.imagePlaceholder {
+    width: 60px;
+    height: 60px;
+    background-color: #E2E8F0;
+    border-radius: 12px;
+}
+
+.middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: normal;
+    color: #000000;
+    margin: 0;
+    max-width: 500px;
+}
+
+.tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 14px;
+    padding: 2px 12px;
+    border-radius: 20px;
+    background: #F1F5F9;
+    color: #64748B;
+    border: 1px solid #E2E8F0;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    min-width: 180px;
+}
+
+.date {
+    font-size: 22px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.joinBtn {
+    min-width: 180px;
+    height: 48px;
+    background-color: #212631 !important;
+    color: #FFFFFF !important;
+}

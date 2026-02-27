@@ -4,6 +4,7 @@ export type SimpleLink = {
   label: string;
   href: string;
   external?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
 };
 
 interface NavLinksProps {
@@ -33,11 +34,12 @@ export const NavLinks = ({
             className={linkClassName}
             target="_blank"
             rel="noreferrer"
+            onClick={item.onClick}
           >
             {item.label}
           </a>
         ) : (
-          <Link href={item.href} className={linkClassName}>
+          <Link href={item.href} className={linkClassName} onClick={item.onClick}>
             {item.label}
           </Link>
         );

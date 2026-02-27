@@ -1,0 +1,71 @@
+@use "../../../styles/variables" as *;
+
+.card {
+    background-color: #FFFFFF;
+    padding: 60px 44px 32px;
+    display: flex;
+    flex-direction: column;
+    max-width: 323px;
+    height: 100%;
+    border-radius: 48px;
+    background: #FFF;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.reviewText {
+    font-family: $font-rubik;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #000;
+    margin: 0;
+    flex-grow: 1;
+    margin-bottom: 79px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.studentInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.status {
+    color: #ADAAAA;
+    font-family: $font-roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    margin-bottom: 4px;
+}
+
+.name {
+    color: #000;
+    font-family: $font-rubik;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 0;
+}
+
+.googleWrapper {
+    width: 48px;
+    height: 48px;
+    background-color: #F8F9FA;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .googleIcon {
+        width: 24px;
+        height: 24px;
+    }
+}

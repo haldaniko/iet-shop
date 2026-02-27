@@ -1,0 +1,161 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.section {
+    padding:0 0 80px 0;
+    background-color: #F8F9FA;
+}
+
+.sectionLayout {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.container {
+    @include container;
+    padding: 0 44px;
+}
+
+.mainLayout {
+    display: flex;
+    align-items: stretch;
+    gap: 40px;
+}
+
+.titleWrapper {
+    width: 240px;
+    flex-shrink: 0;
+    padding: 60px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.titleContainer {
+    // margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 38px;
+    line-height: normal;
+    font-weight: 500;
+    color: #000;
+    margin: 0;
+}
+
+.highlight {
+    color: $color-accent;
+    display: block;
+}
+
+.navigation {
+    // margin-top: 22px;
+}
+
+.navList {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    gap: 8px;
+}
+
+.navArrow {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.7;
+    }
+
+    &:first-child {
+        margin-right: 14px; // 14 + 8 (gap) = 22px
+    }
+
+    &:last-child {
+        margin-left: 14px; // 14 + 8 (gap) = 22px
+    }
+
+    svg {
+        display: block;
+    }
+}
+
+.dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.activeDot {
+        background-color: #212631;
+    }
+}
+
+.carouselContent {
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 60px 0;
+    margin: -30px 0;
+}
+
+.reviewList {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    transition: transform 0.5s ease-in-out;
+}
+
+.reviewItem {
+    flex: 0 0 calc(100% / 3);
+    padding: 0 12px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    transition: transform 0.5s ease-in-out;
+
+    &.rotated {
+        transform: rotate(10.647deg);
+        z-index: 2;
+    }
+}
+
+.reminderBlock {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.reminderLabel {
+    background-color: #5A55F4;
+    color: #FFF;
+    padding: 12px 24px;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    border-top-left-radius: 24px;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.reminderText {
+    margin-left: 20px;
+    color: #FFF;
+    font-size: 16px;
+}
+
+.reminderLayout {
+    display: flex;
+    gap: 34px;
+    margin-top: 40px;
+}

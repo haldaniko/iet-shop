@@ -5,7 +5,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    font-family: $font-rubik;
+    font-size: var(--font-size-xs, 18px);
+    font-weight: 500;
+    color: $color-dark-blue;
+    text-align: center;
+    line-height: normal;
     transition: all 0.3s ease;
     user-select: none;
     border: none;
