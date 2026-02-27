@@ -1,15 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import { useLanguage } from "@/lib/LanguageContext";
-import { translations } from "./translations";
-import styles from "./ReviewsSection.module.scss";
 import { ReviewCard } from "@/components/ui/ReviewCard/ReviewCard";
 import { ReminderCard } from "@/components/ui/ReminderCard/ReminderCard";
 import { IconArrowLeft, IconArrowRight } from "@/components/icons";
+import { useTranslate } from "@/lib/useTranslate";
+import { translations } from "./translations";
+import styles from "./ReviewsSection.module.scss";
 
 export const ReviewsSection = () => {
-  const { lang } = useLanguage();
-  const t = translations[lang];
+  const { t } = useTranslate(translations);
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalSteps = t.reviews.length;
 
@@ -24,7 +23,7 @@ export const ReviewsSection = () => {
     <section className={styles.section}>
       <div className={styles.container}>
         <div>
-            
+
         </div>
         <div className={styles.sectionLayout}>
           <div className={styles.mainLayout}>

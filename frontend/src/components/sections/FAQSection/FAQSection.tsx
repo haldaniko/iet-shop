@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import styles from "./FAQSection.module.scss";
-import { useLanguage } from "@/lib/LanguageContext";
+import { useTranslate } from "@/lib/useTranslate";
 import { translations, translationsTitle } from "./translations";
-import { ReminderCard } from "../../ui/ReminderCard/ReminderCard";
+import { ReminderCard } from "@/components/ui/ReminderCard/ReminderCard";
 
 export const FAQSection = () => {
-  const { lang } = useLanguage();
-  const tr = translations[lang as keyof typeof translations];
-  const titleTr = translationsTitle[lang as keyof typeof translationsTitle];
+  const { t: tr } = useTranslate(translations);
+  const { t: titleTr } = useTranslate(translationsTitle);
 
   const [activeFAQ, setActiveFAQ] = useState<string | null>(null);
 

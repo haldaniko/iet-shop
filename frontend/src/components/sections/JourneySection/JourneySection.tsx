@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { useLanguage } from "@/lib/LanguageContext";
+import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import styles from './JourneySection.module.scss';
 
@@ -11,8 +11,7 @@ import step2Img from '@/assets/journeyimg/Step2.jpg';
 import step3Img from '@/assets/journeyimg/Step3.jpg';
 
 export const JourneySection = () => {
-    const { lang } = useLanguage();
-    const t = translations[lang];
+    const { t } = useTranslate(translations);
 
     const sectionRef = useRef<HTMLElement>(null);
     const [inView, setInView] = useState(false);

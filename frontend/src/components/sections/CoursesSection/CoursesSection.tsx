@@ -1,17 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { useLanguage } from "@/lib/LanguageContext";
 import { translations, courseTags } from "./translations";
 import styles from "./CoursesSection.module.scss";
 import { IconLightbulb, IconHelpBtn } from "@/components/icons";
 import { CourseCard } from "@/components/ui/Coursecard/CourseCard";
-import { useState } from "react";
+import { Product } from "@/lib/api";
+import { useTranslate } from "@/lib/useTranslate";
 
-export const CoursesSection = () => {
-  const { lang } = useLanguage();
-  const t = translations[lang];
+interface CoursesSectionProps {
+  products?: Product[];
+}
+
+export const CoursesSection = ({ products = [] }: CoursesSectionProps) => {
+  const { t, lang } = useTranslate(translations);
   const tags = courseTags[lang];
   const [activeTag, setActiveTag] = useState("all");
 
@@ -60,10 +63,18 @@ export const CoursesSection = () => {
         </div>
 
         <div className={styles.coursesGrid}>
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
+          {products.length > 0 ? (
+            products.map((product) => (
+              <CourseCard key={product.id} product={product} />
+            ))
+          ) : (
+            <>
+              <CourseCard />
+              <CourseCard />
+              <CourseCard />
+              <CourseCard />
+            </>
+          )}
         </div>
       </div>
     </section>

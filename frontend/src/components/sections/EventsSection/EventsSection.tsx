@@ -2,15 +2,14 @@
 
 import React from "react";
 import styles from "./EventsSection.module.scss";
-import { useLanguage } from "@/lib/LanguageContext";
+import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import { EventCard } from "@/components/ui/EventCard/EventCard";
 import { IconArrowDown } from "@/components/icons";
 import { useVerticalScroll } from "@/lib/useVerticalScroll";
 
 export const EventsSection = () => {
-  const { lang } = useLanguage();
-  const t = translations[lang];
+  const { t } = useTranslate(translations);
 
   const { containerRef, scrollNext } = useVerticalScroll({
     cardHeight: 148,
@@ -27,7 +26,7 @@ export const EventsSection = () => {
             {t.events.map((event) => (
               <EventCard
                 key={event.id}
-                {...event} 
+                {...event}
                 joinBtnText={t.joinBtn}
                 onJoin={() => console.log("Joining event:", event.id)}
               />

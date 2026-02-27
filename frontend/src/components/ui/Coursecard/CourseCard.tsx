@@ -6,12 +6,19 @@ import { Button } from '@/components/ui/Button/Button';
 import { IconHelpBtn } from '@/components/icons';
 import styles from './CourseCard.module.scss';
 
-import { useLanguage } from "@/lib/LanguageContext";
+import { useTranslate } from "@/lib/useTranslate";
+import { Product } from "@/lib/api";
 import { translations } from "./translations";
 
-export const CourseCard = () => {
-  const { lang } = useLanguage();
-  const t = translations[lang];
+interface CourseCardProps {
+  product?: Product;
+}
+
+export const CourseCard = ({ product }: CourseCardProps) => {
+  const { t } = useTranslate(translations);
+
+  const title = product?.title || "Front End Development";
+  // For now, using mock logic for badges if product is provided
 
   return (
     <div className={styles.card}>
@@ -26,7 +33,7 @@ export const CourseCard = () => {
 
       <div className={styles.titleWrapper}>
         <div className={styles.dot} />
-        <h3 className={styles.title}>Front End Development</h3>
+        <h3 className={styles.title}>{title}</h3>
       </div>
 
       <div className={styles.footer}>

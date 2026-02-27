@@ -37,11 +37,7 @@ export default function RootLayout({
         className={`${roboto.variable} ${robotoFlex.variable} ${rubik.variable} antialiased text-gray-900 bg-gray-50`}
       >
         <LanguageProvider>
-          <Header />
-          <main>
-            {children}
-          </main>
-          <Footer />
+          {children}
         </LanguageProvider>
       </body>
     </html>

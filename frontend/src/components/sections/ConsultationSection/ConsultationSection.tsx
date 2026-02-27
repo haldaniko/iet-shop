@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useLanguage } from "@/lib/LanguageContext";
+import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import styles from "./ConsultationSection.module.scss";
 import { Button } from "@/components/ui/Button/Button";
 import Link from 'next/link';
 
 export const ConsultationSection = () => {
-  const { lang } = useLanguage();
-  const t = translations[lang];
+  const { t } = useTranslate(translations);
 
   const [formData, setFormData] = useState({
     name: '',

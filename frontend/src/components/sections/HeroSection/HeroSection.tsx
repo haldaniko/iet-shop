@@ -4,20 +4,19 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import HeroImage from "@/assets/HeroImage.png";
-import { useLanguage } from "@/lib/LanguageContext";
+import { useTranslate } from "@/lib/useTranslate";
 import { Button } from "@/components/ui/Button/Button";
 import RectangleHero from "@/assets/RectangleHero.png";
 import locationIcon from "@/assets/Location.svg";
 import { translations } from "./translations";
-import styles from "./Hero.module.scss";
+import styles from "./HeroSection.module.scss";
 
-interface HeroProps {
+interface HeroSectionProps {
   metadata?: Record<string, unknown>;
 }
 
-export const Hero = ({ metadata = {} }: HeroProps) => {
-  const { lang } = useLanguage();
-  const tr = translations[lang as keyof typeof translations];
+export const HeroSection = ({ metadata = {} }: HeroSectionProps) => {
+  const { t: tr, lang } = useTranslate(translations);
 
   const getDynamic = (key: string, fallback: string) => {
     const dynamicKey = `${key}_${lang}`;

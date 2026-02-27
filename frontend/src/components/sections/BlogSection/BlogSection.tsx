@@ -2,22 +2,21 @@
 
 import React, { useState, useRef } from 'react';
 import styles from './BlogSection.module.scss';
-import { useLanguage } from '@/lib/LanguageContext';
-import { translations, translationsTitle } from './translations';
 import { BlogCard } from '@/components/ui/BlogCard/BlogCard';
 import { CarouselNav } from '@/components/ui/CarouselNav/CarouselNav';
+import { useTranslate } from "@/lib/useTranslate";
+import { translations, translationsTitle } from './translations';
 
 export const BlogSection = () => {
-    const { lang } = useLanguage();
-    const t = translations[lang];
-    const tTitle = translationsTitle[lang];
-    
+    const { t } = useTranslate(translations);
+    const { t: tTitle } = useTranslate(translationsTitle);
+
     const [activeIndex, setActiveIndex] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
-    
-    const total = t.blogs.length -1;
-    
-    const cardWidth = 509; 
+
+    const total = t.blogs.length - 1;
+
+    const cardWidth = 509;
     const gap = 24;
 
     const scrollToStep = (index: number) => {
@@ -53,7 +52,7 @@ export const BlogSection = () => {
                     <h2>
                         {tTitle.title} <span className={styles.infoBadge}>{tTitle.badge}</span>
                     </h2>
-                    <CarouselNav 
+                    <CarouselNav
                         currentIndex={activeIndex}
                         totalSteps={total}
                         onNext={handleNext}

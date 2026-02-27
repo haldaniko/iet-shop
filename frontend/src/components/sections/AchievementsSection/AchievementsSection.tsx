@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useRef, useState } from 'react';
-import { useLanguage } from "@/lib/LanguageContext";
+import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import achievmentStar from '@/assets/AchievmentsStar.png'
-import styles from "./Achievments.module.scss";
+import styles from "./AchievementsSection.module.scss";
 
 import Image from 'next/image';
 
@@ -15,9 +15,8 @@ const PlayIcon = () => (
   </svg>
 );
 
-export const Achievments = () => {
-  const { lang } = useLanguage();
-  const t = translations[lang];
+export const AchievementsSection = () => {
+  const { t } = useTranslate(translations);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
