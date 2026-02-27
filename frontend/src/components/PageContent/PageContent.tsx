@@ -9,14 +9,14 @@ import { CoursesSection } from "../home/CoursesSection/CoursesSection";
 import { ReviewsSection } from "../home/ReviewsSection/ReviewsSection";
 import { ConsultationSection } from "../home/ConsultationSection/ConsultationSection";
 import { BlogSection } from "../home/BlogSection/BlogSection";
+import { FAQSection } from "../home/FAQSection/FAQSection";
 
 import styles from "./PageContent.module.scss";
 
+
 export const PageContent = ({
-    products,
     metadata = {}
 }: {
-    products: unknown[],
     metadata?: Record<string, unknown>
 }) => {
     return (
@@ -30,6 +30,7 @@ export const PageContent = ({
             <ConsultationSection />
             <EventsSection />
             <BlogSection />
+            <FAQSection />
         </div>
     );
 };
