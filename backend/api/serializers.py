@@ -16,6 +16,7 @@ from .models import (
     Event,
     Message,
     Order,
+    Project,
     Post,
     Tag,
 )
@@ -35,9 +36,8 @@ class BilingualSerializerMixin:
         if not file_name or (storage is not None and not storage.exists(file_name)):
             return None
 
-        request = self.context.get("request")
-        if request:
-            return request.build_absolute_uri(file_field.url)
+        # Return relative media paths so frontend can resolve host consistently
+        # in both local and Docker environments.
         return file_field.url
 
     @staticmethod
@@ -273,6 +273,44 @@ class PostSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
         return self._file_url(obj.picture)
 
 
+class ProjectSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+    excerpt = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField()
+    cover_image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Project
+        fields = [
+            "id",
+            "slug",
+            "title",
+            "excerpt",
+            "content",
+            "cover_image",
+            "is_active",
+            "created_at",
+            "title_en",
+            "title_bg",
+            "excerpt_en",
+            "excerpt_bg",
+            "content_en",
+            "content_bg",
+        ]
+
+    def get_title(self, obj):
+        return self._bilingual(obj.title_en, obj.title_bg)
+
+    def get_excerpt(self, obj):
+        return self._bilingual(obj.excerpt_en, obj.excerpt_bg)
+
+    def get_content(self, obj):
+        return self._bilingual(obj.content_en, obj.content_bg)
+
+    def get_cover_image(self, obj):
+        return self._file_url(obj.cover_image)
+
+
 class ConsultationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consultation
@@ -421,6 +459,25 @@ class AdminPostSerializer(serializers.ModelSerializer):
             'created_at',
             'tags',
             'tag_ids',
+        ]
+        read_only_fields = []
+
+
+class AdminProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = [
+            "id",
+            "slug",
+            "title_en",
+            "title_bg",
+            "excerpt_en",
+            "excerpt_bg",
+            "content_en",
+            "content_bg",
+            "cover_image",
+            "is_active",
+            "created_at",
         ]
         read_only_fields = []
 

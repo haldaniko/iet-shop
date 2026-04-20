@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 import stripe
 from django.conf import settings
@@ -7,6 +8,7 @@ from django.core.mail import send_mail
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import HttpResponse
 from django.db.models import Exists, OuterRef
+from django.core.files.storage import default_storage
 from django.middleware.csrf import get_token
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -32,6 +34,7 @@ from .models import (
     EventRequest,
     Message,
     Order,
+    Project,
     Post,
     Tag,
 )
@@ -48,6 +51,7 @@ from .serializers import (
     AdminEventSerializer,
     AdminMessageSerializer,
     AdminOrderSerializer,
+    AdminProjectSerializer,
     AdminPostSerializer,
     AdminTagSerializer,
     AdminUserSerializer,
@@ -60,6 +64,7 @@ from .serializers import (
     EventSerializer,
     EventRequestSerializer,
     PostSerializer,
+    ProjectSerializer,
     TagSerializer,
 )
 from .stripe_services import create_checkout_session, resolve_course_by_slug
@@ -328,6 +333,7 @@ class AdminDashboardStatsView(APIView):
                 'courses': Course.objects.count(),
                 'events': Event.objects.count(),
                 'posts': Post.objects.count(),
+                'projects': Project.objects.count(),
                 'consultations': Consultation.objects.count(),
                 'event_requests': EventRequest.objects.count(),
                 'orders': Order.objects.count(),
@@ -365,6 +371,18 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().prefetch_related("tags")
     serializer_class = PostSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+
+class ProjectViewSet(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.method in permissions.SAFE_METHODS:
+            queryset = queryset.filter(is_active=True)
+        return queryset
 
 
 class ConsultationViewSet(viewsets.ModelViewSet):
@@ -427,6 +445,34 @@ class AdminPostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().prefetch_related('tags').order_by('id')
     serializer_class = AdminPostSerializer
     permission_classes = [IsSuperUser]
+
+
+class AdminProjectViewSet(viewsets.ModelViewSet):
+    queryset = Project.objects.all().order_by('id')
+    serializer_class = AdminProjectSerializer
+    permission_classes = [IsSuperUser]
+
+
+class AdminProjectImageUploadView(APIView):
+    permission_classes = [IsSuperUser]
+
+    def post(self, request):
+        image = request.FILES.get('image')
+        if not image:
+            return Response(
+                {'detail': 'Image file is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        extension = image.name.rsplit('.', 1)[-1].lower() if '.' in image.name else 'bin'
+        file_name = f"projects/content/{uuid.uuid4().hex}.{extension}"
+        saved_path = default_storage.save(file_name, image)
+        file_url = default_storage.url(saved_path)
+
+        return Response(
+            {'url': request.build_absolute_uri(file_url)},
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class AdminConsultationViewSet(viewsets.ReadOnlyModelViewSet):

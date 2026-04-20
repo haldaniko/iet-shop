@@ -34,6 +34,10 @@ const translations: TranslationNode = {
       title: "Публикации",
       description: "Управление на публикации в блога и връзките им към етикети.",
     },
+    projects: {
+      title: "Проекти",
+      description: "Управление на страници с проекти и богато съдържание.",
+    },
     consultations: {
       title: "Консултации",
       description: "Четене на входящи заявки за консултация.",
@@ -84,6 +88,9 @@ const translations: TranslationNode = {
     content_en: "Съдържание (англ.)",
     content_bg: "Съдържание (бълг.)",
     picture: "Изображение",
+    cover_image: "Основно изображение",
+    excerpt_en: "Кратко описание (англ.)",
+    excerpt_bg: "Кратко описание (бълг.)",
     created_at: "Създадено",
     updated_at: "Актуализирано",
     paid_at: "Платено в",

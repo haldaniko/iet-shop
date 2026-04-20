@@ -95,6 +95,23 @@ export interface Post {
   tags: Tag[];
 }
 
+export interface Project {
+  id: number;
+  slug: string;
+  title?: LocalizedValue;
+  title_en?: string;
+  title_bg?: string;
+  excerpt?: LocalizedValue;
+  excerpt_en?: string;
+  excerpt_bg?: string;
+  content?: LocalizedValue;
+  content_en?: Record<string, unknown>;
+  content_bg?: Record<string, unknown>;
+  cover_image?: string;
+  is_active: boolean;
+  created_at: string;
+}
+
 export interface Event {
   id: number;
   title: LocalizedValue;
@@ -112,6 +129,11 @@ export interface Event {
 
 
 const getEffectiveApiBase = () => {
+  const internalBase = process.env.API_INTERNAL_URL?.replace(/\/+$/, "");
+  if (typeof window === "undefined" && internalBase) {
+    return internalBase;
+  }
+
   const configuredBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
   if (configuredBase) {
     return configuredBase;
@@ -125,12 +147,52 @@ const getEffectiveApiBase = () => {
   return "http://127.0.0.1:8000";
 };
 
+const getPublicApiBase = () => {
+  const configuredBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+  if (configuredBase) {
+    return configuredBase;
+  }
+
+  if (typeof window !== "undefined") {
+    const protocol = window.location.protocol === "https:" ? "https:" : "http:";
+    return `${protocol}//${window.location.hostname}:8000`;
+  }
+
+  return undefined;
+};
+
+const normalizeAbsoluteAssetUrl = (rawUrl: string) => {
+  try {
+    const parsed = new URL(rawUrl);
+    const publicBase = getPublicApiBase();
+    if (!publicBase) {
+      return rawUrl;
+    }
+
+    const publicOrigin = new URL(publicBase).origin;
+    const internalBase = process.env.API_INTERNAL_URL?.replace(/\/+$/, "");
+    const internalOrigin = internalBase ? new URL(internalBase).origin : undefined;
+
+    if (internalOrigin && parsed.origin === internalOrigin) {
+      return `${publicOrigin}${parsed.pathname}${parsed.search}${parsed.hash}`;
+    }
+
+    if (parsed.hostname === "backend" || parsed.hostname === "django_backend") {
+      return `${publicOrigin}${parsed.pathname}${parsed.search}${parsed.hash}`;
+    }
+
+    return rawUrl;
+  } catch {
+    return rawUrl;
+  }
+};
+
 const API_BASE = getEffectiveApiBase();
 export const API_URL = `${API_BASE}/api`;
 
 const resolveUrl = (url?: string) => {
   if (!url) return undefined;
-  if (url.startsWith('http')) return url;
+  if (url.startsWith('http')) return normalizeAbsoluteAssetUrl(url);
   const base = getEffectiveApiBase();
   return `${base}${url.startsWith('/') ? '' : '/'}${url}`;
 };
@@ -288,6 +350,21 @@ export async function getPosts(): Promise<Post[]> {
   return data.posts as any;
 }
 
+export async function getProjects(): Promise<Project[]> {
+  const projects = await safeFetch('/projects');
+
+  return (projects || []).map((project: any) => {
+    const flat = flattenData(project);
+    return {
+      ...flat,
+      title: flat.title,
+      excerpt: flat.excerpt,
+      content: flat.content,
+      cover_image: resolveUrl(flat.cover_image),
+    } as Project;
+  });
+}
+
 export async function getEvents(): Promise<Event[]> {
   const data = await getHomePageData();
   return data.events as any;
@@ -304,6 +381,12 @@ export async function getPostBySlug(slug: string): Promise<Post | undefined> {
   const posts = await getPosts();
   const targetSlug = slug.toLowerCase().trim();
   return posts.find(p => p.slug?.toLowerCase().trim() === targetSlug);
+}
+
+export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
+  const projects = await getProjects();
+  const targetSlug = slug.toLowerCase().trim();
+  return projects.find((project) => project.slug?.toLowerCase().trim() === targetSlug);
 }
 
 export async function getEventBySlug(title: string): Promise<Event | undefined> {

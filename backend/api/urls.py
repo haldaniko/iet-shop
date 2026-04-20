@@ -19,6 +19,8 @@ from .views import (
     AdminMeView,
     AdminMessageViewSet,
     AdminOrderViewSet,
+    AdminProjectImageUploadView,
+    AdminProjectViewSet,
     AdminPostViewSet,
     AdminTagViewSet,
     ChatInitView,
@@ -29,6 +31,7 @@ from .views import (
     EventViewSet,
     EventRequestViewSet,
     PostViewSet,
+    ProjectViewSet,
     StripeWebhookView,
     TagViewSet,
     TestView,
@@ -40,6 +43,7 @@ router.register("tags", TagViewSet, basename="tag")
 router.register("courses", CourseViewSet, basename="course")
 router.register("events", EventViewSet, basename="event")
 router.register("posts", PostViewSet, basename="post")
+router.register("projects", ProjectViewSet, basename="project")
 router.register("consultations", ConsultationViewSet, basename="consultation")
 router.register("event-requests", EventRequestViewSet, basename="event-request")
 
@@ -48,6 +52,7 @@ admin_router.register('tags', AdminTagViewSet, basename='admin-tag')
 admin_router.register('courses', AdminCourseViewSet, basename='admin-course')
 admin_router.register('events', AdminEventViewSet, basename='admin-event')
 admin_router.register('posts', AdminPostViewSet, basename='admin-post')
+admin_router.register('projects', AdminProjectViewSet, basename='admin-project')
 admin_router.register('consultations', AdminConsultationViewSet, basename='admin-consultation')
 admin_router.register('event-requests', AdminEventRequestViewSet, basename='admin-event-request')
 admin_router.register('orders', AdminOrderViewSet, basename='admin-order')
@@ -75,6 +80,7 @@ urlpatterns = [
     path('admin/auth/logout/', AdminLogoutView.as_view(), name='admin-auth-logout'),
     path('admin/auth/me/', AdminMeView.as_view(), name='admin-auth-me'),
     path('admin/dashboard/stats/', AdminDashboardStatsView.as_view(), name='admin-dashboard-stats'),
+    path('admin/projects/upload-image/', AdminProjectImageUploadView.as_view(), name='admin-project-image-upload'),
     path('admin/', include(admin_router.urls)),
 ]
 

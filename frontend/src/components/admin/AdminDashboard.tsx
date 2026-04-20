@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { JSONContent } from "@tiptap/react";
 
 import type { ChatMessage } from "@/lib/chat";
 import {
@@ -20,14 +21,16 @@ import {
   listAdminSessionMessages,
   sendAdminOperatorMessage,
   updateAdminResource,
+  uploadAdminProjectImage,
 } from "@/lib/admin";
 
 import type { Lang } from "@/lib/translations";
 import { getAdminTranslation } from "./translations";
+import { RichTextEditor } from "./RichTextEditor";
 
 import styles from "./AdminDashboard.module.scss";
 
-type FieldType = "text" | "textarea" | "number" | "boolean" | "date" | "datetime" | "select" | "ids" | "file";
+type FieldType = "text" | "textarea" | "number" | "boolean" | "date" | "datetime" | "select" | "ids" | "file" | "richtext";
 
 type FormValues = Record<string, unknown>;
 
@@ -261,6 +264,9 @@ const toFormValue = (field: FieldDefinition, row: Record<string, unknown> | null
     if (field.type === "boolean") {
       return false;
     }
+    if (field.type === "richtext") {
+      return { type: "doc", content: [{ type: "paragraph" }] };
+    }
     if (field.type === "file") {
       return null;
     }
@@ -302,6 +308,13 @@ const toFormValue = (field: FieldDefinition, row: Record<string, unknown> | null
 
   if (field.type === "file") {
     return null;
+  }
+
+  if (field.type === "richtext") {
+    if (rawValue && typeof rawValue === "object") {
+      return rawValue;
+    }
+    return { type: "doc", content: [{ type: "paragraph" }] };
   }
 
   if (rawValue === null || rawValue === undefined) {
@@ -362,6 +375,15 @@ const buildPayloadFromForm = (definition: ResourceDefinition, formValues: FormVa
 
     if (field.type === "ids") {
       payload[field.name] = normalizeIdArray(rawValue);
+      continue;
+    }
+
+    if (field.type === "richtext") {
+      if (rawValue && typeof rawValue === "object") {
+        payload[field.name] = rawValue;
+      } else {
+        payload[field.name] = { type: "doc", content: [{ type: "paragraph" }] };
+      }
       continue;
     }
 
@@ -658,6 +680,25 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
       ],
     },
     {
+      key: "projects",
+      title: t("resources.projects.title"),
+      description: t("resources.projects.description"),
+      columns: ["id", "slug", "title_en", "is_active", "created_at"],
+      fields: [
+        { name: "id", label: t("fieldLabels", "id"), type: "number", readOnly: true },
+        { name: "slug", label: t("fieldLabels", "slug"), type: "text", required: true },
+        { name: "title_en", label: t("fieldLabels", "title_en"), type: "text" },
+        { name: "title_bg", label: t("fieldLabels", "title_bg"), type: "text" },
+        { name: "excerpt_en", label: t("fieldLabels", "excerpt_en"), type: "textarea" },
+        { name: "excerpt_bg", label: t("fieldLabels", "excerpt_bg"), type: "textarea" },
+        { name: "content_en", label: t("fieldLabels", "content_en"), type: "richtext" },
+        { name: "content_bg", label: t("fieldLabels", "content_bg"), type: "richtext" },
+        { name: "cover_image", label: t("fieldLabels", "cover_image"), type: "file" },
+        { name: "is_active", label: t("fieldLabels", "is_active"), type: "boolean" },
+        { name: "created_at", label: t("fieldLabels", "created_at"), type: "datetime" },
+      ],
+    },
+    {
       key: "consultations",
       title: t("resources.consultations.title"),
       description: t("resources.consultations.description"),
@@ -711,7 +752,7 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
 
 const NAV_GROUPS: Array<{ label: string; tabs: DashboardTab[] }> = [
   { label: "ui.main", tabs: ["operator-chat"] },
-  { label: "ui.content", tabs: ["tags", "courses", "events", "posts"] },
+  { label: "ui.content", tabs: ["tags", "courses", "events", "posts", "projects"] },
   { label: "ui.requests", tabs: ["consultations", "event-requests", "orders"] },
 ];
 
@@ -1948,6 +1989,18 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
             disabled={disabled}
             placeholder={field.placeholder}
             rows={4}
+          />
+        ) : null}
+
+        {field.type === "richtext" ? (
+          <RichTextEditor
+            value={value && typeof value === "object" ? (value as JSONContent) : null}
+            disabled={disabled}
+            onChange={(nextValue) => handleFieldChange(field.name, nextValue)}
+            onUploadImage={async (file) => {
+              const uploaded = await uploadAdminProjectImage(file);
+              return uploaded.url;
+            }}
           />
         ) : null}
 

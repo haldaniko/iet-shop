@@ -17,6 +17,7 @@ export interface AdminStats {
   courses: number;
   events: number;
   posts: number;
+  projects: number;
   consultations: number;
   event_requests: number;
   orders: number;
@@ -50,6 +51,7 @@ export type AdminResourceKey =
   | "courses"
   | "events"
   | "posts"
+  | "projects"
   | "consultations"
   | "event-requests"
   | "orders"
@@ -373,6 +375,20 @@ export async function sendAdminOperatorMessage(chatSessionId: string, text: stri
     chat_session: chatSessionId,
     sender_type: "operator",
     text,
+  });
+}
+
+export async function uploadAdminProjectImage(file: File) {
+  const csrfToken = await ensureCsrfToken();
+  const formData = new FormData();
+  formData.set("image", file);
+
+  return requestJson<{ url: string }>("/api/admin/projects/upload-image/", {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": csrfToken,
+    },
+    body: formData,
   });
 }
 

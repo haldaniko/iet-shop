@@ -43,6 +43,14 @@
   padding: 20px 0 40px;
 }
 
+.emptyState {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-rubik, "Rubik", sans-serif);
+  font-size: 18px;
+  color: #2d3748;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 1fr;

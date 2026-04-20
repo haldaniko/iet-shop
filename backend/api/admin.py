@@ -16,6 +16,7 @@ from .models import (
     EventRequest,
     Message,
     Order,
+    Project,
     Post,
     Tag,
 )
@@ -271,6 +272,40 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ("created_at",)
     search_fields = ("title_en", "title_bg", "author")
     filter_horizontal = ("tags",)
+
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ("title_en", "title_bg", "slug", "is_active", "created_at")
+    list_filter = ("is_active", "created_at")
+    search_fields = ("title_en", "title_bg", "slug")
+    readonly_fields = ("created_at",)
+    fieldsets = (
+        (
+            "Main",
+            {
+                "fields": (
+                    "slug",
+                    "is_active",
+                    "created_at",
+                )
+            },
+        ),
+        (
+            "Content",
+            {
+                "fields": (
+                    "title_en",
+                    "title_bg",
+                    "excerpt_en",
+                    "excerpt_bg",
+                    "cover_image",
+                    "content_en",
+                    "content_bg",
+                )
+            },
+        ),
+    )
 
 
 @admin.register(Consultation)

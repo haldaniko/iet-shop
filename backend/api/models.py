@@ -108,6 +108,25 @@ class Post(models.Model):
         return self.title_en or self.title_bg or f"Post #{self.pk}"
 
 
+class Project(models.Model):
+    slug = models.SlugField(max_length=255, unique=True)
+    title_en = models.CharField(max_length=255, null=True, blank=True)
+    title_bg = models.CharField(max_length=255, null=True, blank=True)
+    excerpt_en = models.TextField(null=True, blank=True)
+    excerpt_bg = models.TextField(null=True, blank=True)
+    cover_image = models.ImageField(upload_to="projects/covers/", null=True, blank=True)
+    content_en = models.JSONField(default=dict, blank=True)
+    content_bg = models.JSONField(default=dict, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["-created_at", "-id"]
+
+    def __str__(self):
+        return self.title_en or self.title_bg or f"Project #{self.pk}"
+
+
 class Consultation(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
