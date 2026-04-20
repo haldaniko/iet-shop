@@ -3,6 +3,7 @@ import logging
 import stripe
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import send_mail
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import HttpResponse
 from django.db.models import Exists, OuterRef
@@ -65,6 +66,35 @@ from .stripe_services import create_checkout_session, resolve_course_by_slug
 
 
 logger = logging.getLogger(__name__)
+
+
+def _send_checkout_confirmation_email(session_obj: dict, amount_total_eur: int) -> None:
+    customer_details = session_obj.get("customer_details") or {}
+    recipient_email = str(customer_details.get("email") or session_obj.get("customer_email") or "").strip()
+    if not recipient_email:
+        return
+
+    metadata = session_obj.get("metadata") or {}
+    course_label = str(metadata.get("course_slug") or metadata.get("course_id") or "course").strip()
+    currency = str(session_obj.get("currency") or "eur").upper()
+    checkout_session_id = str(session_obj.get("id") or "").strip()
+
+    subject = "Payment confirmation"
+    message = (
+        f"Your payment was successful.\n\n"
+        f"Course: {course_label}\n"
+        f"Amount: {amount_total_eur} {currency}\n"
+        f"Checkout session: {checkout_session_id}\n\n"
+        f"Thank you for your purchase."
+    )
+
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[recipient_email],
+        fail_silently=False,
+    )
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -171,6 +201,15 @@ class StripeWebhookView(APIView):
                     stripe_checkout_session_id=checkout_session_id,
                     defaults=defaults,
                 )
+
+            if is_paid:
+                try:
+                    _send_checkout_confirmation_email(session_obj, amount_total)
+                except Exception:
+                    logger.exception(
+                        "Failed to send payment confirmation email for checkout session %s",
+                        checkout_session_id,
+                    )
 
             logger.info(
                 "Stripe payment completed: session_id=%s payment_status=%s amount_total=%s currency=%s",
