@@ -374,7 +374,12 @@ export const Footer = ({ config }: FooterProps) => {
                   {tr.leaveRequest}
                 </Button>
               </div>
-              <ChatButton onClick={handleToggleChat} isOpen={isChatOpen} />
+              <ChatButton 
+                onClick={handleToggleChat} 
+                isOpen={isChatOpen} 
+                liveLabel={tr.chatLive}
+                closeLabel={tr.chatClose}
+              />
             </div>
           </div>
 

@@ -22,6 +22,8 @@ type FooterTranslations = {
   footerCourseSmm: string;
   footerPartnered: string;
   footerCopyright: string;
+  chatLive: string;
+  chatClose: string;
 };
 
 export const translations: Record<Lang, FooterTranslations> = {
@@ -48,6 +50,8 @@ export const translations: Record<Lang, FooterTranslations> = {
     footerPartnered: "Partnered with",
     footerCopyright:
       "© 2026 Innovative Educational Technologies. All rights reserved.",
+    chatLive: "Live chat",
+    chatClose: "Close chat",
   },
   bg: {
     leaveRequest: "Остави запитване",
@@ -72,6 +76,8 @@ export const translations: Record<Lang, FooterTranslations> = {
     footerPartnered: "В партньорство с",
     footerCopyright:
       "© 2026 Инновативни образователни технологии. Всички права запазени.",
+    chatLive: "Чат на живо",
+    chatClose: "Затвори чата",
   },
 };
 

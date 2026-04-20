@@ -4,13 +4,15 @@ import styles from "./ChatButton.module.scss";
 interface ChatButtonProps {
     isOpen: boolean;
     onClick: () => void;
+    liveLabel: string;
+    closeLabel: string;
 }
 
-export const ChatButton = ({ isOpen, onClick }: ChatButtonProps) => {
+export const ChatButton = ({ isOpen, onClick, liveLabel, closeLabel }: ChatButtonProps) => {
     return (
         <div className={styles.btnWrapper}>
             <button className={styles.chatButton} onClick={onClick}>
-                {isOpen ? "Close chat" : "Live chat"}
+                {isOpen ? closeLabel : liveLabel}
             </button>
         </div>
     );
