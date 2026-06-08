@@ -20,7 +20,11 @@ from rest_framework.exceptions import Throttled, ValidationError
 from rest_framework.views import APIView
 
 from .authentication import SessionCSRFAuthentication
-from .chat_services import ChatRateLimitExceeded, create_message, get_or_create_chat_session
+from .chat_services import (
+    ChatRateLimitExceeded,
+    create_user_message_with_optional_bot_reply,
+    get_or_create_chat_session,
+)
 from .models import (
     ChatSession,
     Consultation,
@@ -255,10 +259,9 @@ class ChatMessagesView(APIView):
         chat_session = get_or_create_chat_session(request)
 
         try:
-            message = create_message(
+            message, _ = create_user_message_with_optional_bot_reply(
                 chat_session=chat_session,
                 text=serializer.validated_data['text'],
-                sender_type=Message.SenderType.USER,
             )
         except ChatRateLimitExceeded as exc:
             raise Throttled(wait=exc.wait_seconds, detail=exc.detail) from exc

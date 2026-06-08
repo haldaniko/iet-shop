@@ -4,12 +4,11 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from .chat_services import (
     ChatRateLimitExceeded,
-    create_message,
+    create_user_message_with_optional_bot_reply,
     get_admin_chat_group_name,
     get_chat_group_name,
     get_or_create_chat_session_by_session_key,
 )
-from .models import Message
 
 
 @database_sync_to_async
@@ -21,7 +20,7 @@ def get_chat_session_payload(session_key):
 @database_sync_to_async
 def save_user_message(session_key, text):
     chat_session = get_or_create_chat_session_by_session_key(session_key)
-    create_message(chat_session=chat_session, text=text, sender_type=Message.SenderType.USER)
+    create_user_message_with_optional_bot_reply(chat_session=chat_session, text=text)
 
 
 class ChatConsumer(AsyncJsonWebsocketConsumer):

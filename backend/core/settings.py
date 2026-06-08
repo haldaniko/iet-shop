@@ -192,6 +192,15 @@ else:
 CHAT_MESSAGE_MAX_LENGTH = int(os.getenv('CHAT_MESSAGE_MAX_LENGTH', '2000'))
 CHAT_RATE_LIMIT_COUNT = int(os.getenv('CHAT_RATE_LIMIT_COUNT', '5'))
 CHAT_RATE_LIMIT_WINDOW_SECONDS = int(os.getenv('CHAT_RATE_LIMIT_WINDOW_SECONDS', '30'))
+CHAT_BOT_ENABLED = env_bool('CHAT_BOT_ENABLED', False)
+CHAT_BOT_MODEL = os.getenv('CHAT_BOT_MODEL', 'openai/gpt-4o-mini')
+CHAT_BOT_TIMEOUT_SECONDS = int(os.getenv('CHAT_BOT_TIMEOUT_SECONDS', '20'))
+CHAT_BOT_MAX_REPLY_LENGTH = int(os.getenv('CHAT_BOT_MAX_REPLY_LENGTH', '1200'))
+
+OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
+OPENROUTER_API_URL = os.getenv('OPENROUTER_API_URL', 'https://openrouter.ai/api/v1/chat/completions')
+OPENROUTER_SITE_URL = os.getenv('OPENROUTER_SITE_URL', 'https://obucheniya.com')
+OPENROUTER_SITE_NAME = os.getenv('OPENROUTER_SITE_NAME', 'IET Shop Assistant')
 
 # Stripe (test mode) configuration.
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')

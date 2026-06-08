@@ -22,7 +22,7 @@ IN_MEMORY_CHANNEL_LAYERS = {
 }
 
 
-@override_settings(CHANNEL_LAYERS=IN_MEMORY_CHANNEL_LAYERS)
+@override_settings(CHANNEL_LAYERS=IN_MEMORY_CHANNEL_LAYERS, CHAT_BOT_ENABLED=False)
 class ChatApiTests(TestCase):
 	def setUp(self):
 		self.client = Client(enforce_csrf_checks=True)
@@ -118,8 +118,27 @@ class ChatApiTests(TestCase):
 
 		self.assertEqual(limited_response.status_code, 429)
 
+	@override_settings(CHAT_BOT_ENABLED=True)
+	@patch('api.chat_services.generate_chatbot_reply', return_value='Auto bot response')
+	def test_post_message_creates_bot_reply_when_enabled(self, _mock_bot_reply):
+		self.init_chat()
 
-@override_settings(CHANNEL_LAYERS=IN_MEMORY_CHANNEL_LAYERS)
+		create_response = self.client.post(
+			reverse('chat-messages'),
+			data=json.dumps({'text': 'Can you help me with schedule?'}),
+			content_type='application/json',
+			**self.auth_headers(),
+		)
+
+		self.assertEqual(create_response.status_code, 201)
+		history = self.client.get(reverse('chat-messages')).json()
+		self.assertEqual(len(history), 2)
+		self.assertEqual(history[0]['sender_type'], 'user')
+		self.assertEqual(history[1]['sender_type'], 'bot')
+		self.assertEqual(history[1]['text'], 'Auto bot response')
+
+
+@override_settings(CHANNEL_LAYERS=IN_MEMORY_CHANNEL_LAYERS, CHAT_BOT_ENABLED=False)
 class ChatWebSocketTests(TransactionTestCase):
 	def setUp(self):
 		self.client = Client(enforce_csrf_checks=True)

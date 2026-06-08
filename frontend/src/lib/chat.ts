@@ -20,10 +20,32 @@ export type ChatSocketEvent =
       wait_seconds?: number;
     };
 
+const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1"]);
+
+const normalizeLoopbackHost = (baseUrl: string) => {
+  if (typeof window === "undefined") {
+    return baseUrl;
+  }
+
+  try {
+    const parsed = new URL(baseUrl);
+    const pageHost = window.location.hostname;
+
+    if (LOOPBACK_HOSTS.has(parsed.hostname) && LOOPBACK_HOSTS.has(pageHost)) {
+      parsed.hostname = pageHost;
+      return parsed.toString().replace(/\/+$/, "");
+    }
+  } catch {
+    return baseUrl;
+  }
+
+  return baseUrl;
+};
+
 const getApiBaseUrl = () => {
   const configuredBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
   if (configuredBase) {
-    return configuredBase;
+    return normalizeLoopbackHost(configuredBase);
   }
   if (typeof window !== "undefined") {
     const protocol = window.location.protocol === "https:" ? "https:" : "http:";

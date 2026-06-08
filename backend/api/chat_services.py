@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from .chat_ai import generate_chatbot_reply
 from .models import ChatSession, Message
 
 
@@ -94,3 +95,22 @@ def create_message(chat_session, text, sender_type):
         text=cleaned_text,
         sender_type=sender_type,
     )
+
+
+def create_user_message_with_optional_bot_reply(chat_session, text):
+    user_message = create_message(
+        chat_session=chat_session,
+        text=text,
+        sender_type=Message.SenderType.USER,
+    )
+
+    bot_message = None
+    bot_reply = generate_chatbot_reply(user_message.text)
+    if bot_reply:
+        bot_message = create_message(
+            chat_session=chat_session,
+            text=bot_reply,
+            sender_type=Message.SenderType.BOT,
+        )
+
+    return user_message, bot_message

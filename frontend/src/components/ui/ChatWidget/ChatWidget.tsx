@@ -8,6 +8,7 @@ import {
     useRef,
     useState,
 } from "react";
+import { createPortal } from "react-dom";
 
 import {
     buildChatWebSocketUrl,
@@ -70,13 +71,16 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     const [status, setStatus] = useState<ConnectionState>("idle");
     const [error, setError] = useState<string | null>(null);
     const [isSending, setIsSending] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
     const socketRef = useRef<WebSocket | null>(null);
     const reconnectTimeoutRef = useRef<number | null>(null);
     const reconnectAttemptsRef = useRef(0);
+    const hasConnectedRef = useRef(false);
     const disposedRef = useRef(false);
+    const sessionRecoverAttemptedRef = useRef(false);
 
     const syncMessages = useEffectEvent((incoming: ChatMessage[]) => {
         startTransition(() => {
@@ -97,6 +101,15 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
         }
 
         if (event.type === "chat.error") {
+            if (event.code === "session_missing" && !sessionRecoverAttemptedRef.current) {
+                sessionRecoverAttemptedRef.current = true;
+                void bootstrapChat().catch(() => {
+                    setStatus("error");
+                    setError(t.errorInit);
+                });
+                return;
+            }
+
             const detail =
                 typeof event.detail === "string" ? event.detail : JSON.stringify(event.detail);
             setError(detail);
@@ -120,7 +133,10 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
         }
 
         reconnectAttemptsRef.current += 1;
-        setStatus("reconnecting");
+        // Keep UI stable after first successful connect; reconnects happen in background.
+        if (!hasConnectedRef.current) {
+            setStatus("reconnecting");
+        }
         reconnectTimeoutRef.current = window.setTimeout(() => {
             void openSocket();
         }, RECONNECT_DELAY_MS);
@@ -138,13 +154,17 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
             socketRef.current.close();
         }
 
-        setStatus(reconnectAttemptsRef.current > 0 ? "reconnecting" : "connecting");
+        if (!hasConnectedRef.current) {
+            setStatus(reconnectAttemptsRef.current > 0 ? "reconnecting" : "connecting");
+        }
 
         const socket = new WebSocket(buildChatWebSocketUrl());
         socketRef.current = socket;
 
         socket.onopen = () => {
             reconnectAttemptsRef.current = 0;
+            hasConnectedRef.current = true;
+            sessionRecoverAttemptedRef.current = false;
             setStatus("connected");
             setError(null);
             void resyncHistory().catch(() => {
@@ -169,6 +189,7 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 
         socket.onerror = () => {
             setError(t.errorConnection);
+            setStatus("error");
         };
     });
 
@@ -179,6 +200,10 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
         syncMessages(initialState.messages);
         await openSocket();
     });
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     useEffect(() => {
         disposedRef.current = false;
@@ -227,6 +252,8 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
             } else {
                 const createdMessage = await sendChatMessage(text);
                 syncMessages([createdMessage]);
+                const freshMessages = await getChatMessages();
+                syncMessages(freshMessages);
             }
         } catch (sendError) {
             setDraft(text);
@@ -243,9 +270,9 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
         }
     };
 
-    if (!isOpen) return null;
+    if (!isOpen || !isMounted) return null;
 
-    return (
+    const widget = (
         <div className={styles.chatWindow}>
             <div className={styles.header}>
                 <div className={styles.agentInfo}>
@@ -255,9 +282,11 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                     <div className={styles.textInfo}>
                         <span className={styles.name}>{t.title}</span>
                         <span className={styles.subtext}>{t.subTitle}</span>
-                        {status !== 'connected' && (
-                            <span className={styles.statusError} style={{ fontSize: '12px', color: '#ff4d4f' }}>
-                                {status === 'connecting' || status === 'reconnecting' ? t.connecting : t.networkError}
+                        {status === 'error' && (
+                            <span
+                                className={styles.statusError}
+                            >
+                                {t.networkError}
                             </span>
                         )}
                     </div>
@@ -326,4 +355,6 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
             </div>
         </div>
     );
+
+    return createPortal(widget, document.body);
 }
