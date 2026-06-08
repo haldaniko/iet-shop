@@ -53,6 +53,10 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
 
   const hasMore = upcomingEvents.length > 3;
 
+  if (upcomingEvents.length === 0) {
+    return null;
+  }
+
   return (
     <section className={styles.section} id="events">
       <div className={styles.container}>
