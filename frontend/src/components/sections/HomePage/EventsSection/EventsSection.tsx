@@ -46,6 +46,11 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
       if (!b.date) return -1;
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
+
+  if (upcomingEvents.length === 0) {
+    return null;
+  }
+
   const hasMore = upcomingEvents.length > 3;
 
   return (
@@ -106,7 +111,6 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                 />
               );
             })}
-            {upcomingEvents.length === 0 && <div className={styles.noEvents}>{t.noEvents}</div>}
           </div>
         </div>
 
