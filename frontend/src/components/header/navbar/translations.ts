@@ -14,14 +14,14 @@ export const translations: Record<Lang, NavbarTranslations> = {
     events: "Events",
     blog: "Blog",
     contact: "Contact",
-    euProjectCode: "Project BG16RFPR001",
+    euProjectCode: "Project BG16RFPR001-1.012-0111-C01",
   },
   bg: {
     projects: "Проекти",
     events: "Събития",
     blog: "Блог",
     contact: "Контакти",
-    euProjectCode: "Проект BG16RFPR001",
+    euProjectCode: "Проект BG16RFPR001-1.012-0111-C01",
   },
 };
 
