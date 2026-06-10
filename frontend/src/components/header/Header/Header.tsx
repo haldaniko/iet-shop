@@ -8,11 +8,14 @@ import { IconUser, IconMenu, IconClose } from "@/components/icons";
 import { RequestButton } from "@/components/header/RequestButton/RequestButton";
 import { LanguageDropdown } from "@/components/header/LanguageDropdown/LanguageDropdown";
 import { Logo } from "@/components/header/Logo/Logo";
+import { Modal } from "@/components/ui/Modal/Modal";
+import euProjectImg from "@/assets/Plakat-IOT-Digi.jpg";
 import styles from "./Header.module.scss";
 
 export const Header = () => {
   const [visible, setVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEuModalOpen, setIsEuModalOpen] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -46,6 +49,11 @@ export const Header = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
 
+  const handleOpenEuProject = () => {
+    setIsEuModalOpen(true);
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
       <header
@@ -58,7 +66,7 @@ export const Header = () => {
               <Logo onClick={closeMenu} />
 
               <div className={styles.navbarDesktop}>
-                <Navbar />
+                <Navbar onEuProjectClick={handleOpenEuProject} />
               </div>
             </div>
 
@@ -96,13 +104,23 @@ export const Header = () => {
       {/* MOBILE MENU DRAWER */}
       <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ""}`}>
         <div className={styles.mobileMenuContent}>
-          <Navbar onLinkClick={closeMenu} />
+          <Navbar onLinkClick={closeMenu} onEuProjectClick={handleOpenEuProject} />
           <div className={styles.mobileMenuActions}>
             <LanguageDropdown />
             <RequestButton />
           </div>
         </div>
       </div>
+
+      <Modal isOpen={isEuModalOpen} onClose={() => setIsEuModalOpen(false)}>
+        <div style={{ textAlign: "center" }}>
+          <Image
+            src={euProjectImg}
+            alt="EU Project Information"
+            style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
+          />
+        </div>
+      </Modal>
     </>
   );
 };

@@ -5,6 +5,7 @@ type NavbarTranslations = {
   events: string;
   blog: string;
   contact: string;
+  euProjectCode: string;
 };
 
 export const translations: Record<Lang, NavbarTranslations> = {
@@ -13,12 +14,14 @@ export const translations: Record<Lang, NavbarTranslations> = {
     events: "Events",
     blog: "Blog",
     contact: "Contact",
+    euProjectCode: "Project BG16RFPR001",
   },
   bg: {
     projects: "Проекти",
     events: "Събития",
     blog: "Блог",
     contact: "Контакти",
+    euProjectCode: "Проект BG16RFPR001",
   },
 };
 

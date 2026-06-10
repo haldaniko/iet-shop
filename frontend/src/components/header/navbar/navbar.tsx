@@ -19,13 +19,15 @@ const navLinks: NavLink[] = [
   { key: "projects", href: "/projects" },
   { key: "blog", href: "/#blog" },
   { key: "contact", href: "/#consultation" },
+  { key: "euProjectCode", href: "#" },
 ];
 
 interface NavbarProps {
   onLinkClick?: () => void;
+  onEuProjectClick?: () => void;
 }
 
-export const Navbar = ({ onLinkClick }: NavbarProps) => {
+export const Navbar = ({ onLinkClick, onEuProjectClick }: NavbarProps) => {
   const { lang } = useLanguage();
   const tr = translations[lang] ?? translations.bg;
 
@@ -53,7 +55,16 @@ export const Navbar = ({ onLinkClick }: NavbarProps) => {
   const simpleLinks: SimpleLink[] = navLinks.map((link) => ({
     label: tr[link.key],
     href: link.href,
-    onClick: (e: any) => handleAnchorClick(e, link.href),
+    onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (link.key === "euProjectCode") {
+        e.preventDefault();
+        onLinkClick?.();
+        onEuProjectClick?.();
+        return;
+      }
+
+      handleAnchorClick(e, link.href);
+    },
   }));
 
   return (
