@@ -4,7 +4,7 @@ export type SimpleLink = {
   label: string;
   href: string;
   external?: boolean;
-  onClick?: (e: React.MouseEvent) => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
 interface NavLinksProps {
