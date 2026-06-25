@@ -219,7 +219,11 @@ const mapTags = (tagIds: any[], allTags: Tag[]) => (tagIds || []).map(id => {
 
 const SERVER_REVALIDATE_SECONDS = 300;
 
-const safeFetch = async (endpoint: string) => {
+type SafeFetchOptions = {
+  cache?: RequestCache;
+};
+
+const safeFetch = async (endpoint: string, options: SafeFetchOptions = {}) => {
   const url = `${API_URL}${endpoint}/`.replace(/\/+$/, '/');
   const isServer = typeof window === 'undefined';
   const requestOptions: any = {
@@ -229,7 +233,11 @@ const safeFetch = async (endpoint: string) => {
   };
 
   if (isServer) {
-    requestOptions.next = { revalidate: SERVER_REVALIDATE_SECONDS };
+    if (options.cache) {
+      requestOptions.cache = options.cache;
+    } else {
+      requestOptions.next = { revalidate: SERVER_REVALIDATE_SECONDS };
+    }
   } else {
     requestOptions.cache = 'no-store';
   }
@@ -351,7 +359,7 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function getProjects(): Promise<Project[]> {
-  const projects = await safeFetch('/projects');
+  const projects = await safeFetch('/projects', { cache: 'no-store' });
 
   return (projects || []).map((project: any) => {
     const flat = flattenData(project);
