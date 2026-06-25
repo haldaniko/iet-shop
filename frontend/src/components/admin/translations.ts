@@ -166,6 +166,7 @@ const translations: TranslationNode = {
     "connection-reconnecting": "повторно свързване",
     "connection-error": "грешка",
     "checking-session": "Проверка на сесия...",
+    "slug-english-hint": "Краткият адрес трябва да бъде на английски: използвайте латински букви, цифри, тирета или долни черти.",
   },
   ui: {
     "admin-title": "IET Админ",

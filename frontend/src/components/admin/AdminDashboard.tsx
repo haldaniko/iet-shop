@@ -48,6 +48,7 @@ interface FieldDefinition {
   readOnly?: boolean;
   options?: FieldOption[];
   placeholder?: string;
+  helperText?: string;
 }
 
 interface TagOption {
@@ -619,7 +620,7 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
       columns: ["id", "slug", "title_en", "type", "price", "is_active"],
       fields: [
         { name: "id", label: t("fieldLabels", "id"), type: "number", readOnly: true },
-        { name: "slug", label: t("fieldLabels", "slug"), type: "text", required: true },
+        { name: "slug", label: t("fieldLabels", "slug"), type: "text", required: true, helperText: t("messages.slug-english-hint") },
         { name: "title_en", label: t("fieldLabels", "title_en"), type: "text" },
         { name: "title_bg", label: t("fieldLabels", "title_bg"), type: "text" },
         { name: "start", label: t("fieldLabels", "start"), type: "date", required: true },
@@ -671,7 +672,7 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
       columns: ["id", "slug", "title_en", "author", "created_at"],
       fields: [
         { name: "id", label: t("fieldLabels", "id"), type: "number", readOnly: true },
-        { name: "slug", label: t("fieldLabels", "slug"), type: "text", required: true },
+        { name: "slug", label: t("fieldLabels", "slug"), type: "text", required: true, helperText: t("messages.slug-english-hint") },
         { name: "title_en", label: t("fieldLabels", "title_en"), type: "text" },
         { name: "title_bg", label: t("fieldLabels", "title_bg"), type: "text" },
         { name: "author", label: t("fieldLabels", "author"), type: "text", required: true },
@@ -689,7 +690,7 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
       columns: ["id", "slug", "title_en", "is_active", "created_at"],
       fields: [
         { name: "id", label: t("fieldLabels", "id"), type: "number", readOnly: true },
-        { name: "slug", label: t("fieldLabels", "slug"), type: "text", required: true },
+        { name: "slug", label: t("fieldLabels", "slug"), type: "text", required: true, helperText: t("messages.slug-english-hint") },
         { name: "title_en", label: t("fieldLabels", "title_en"), type: "text" },
         { name: "title_bg", label: t("fieldLabels", "title_bg"), type: "text" },
         { name: "excerpt_en", label: t("fieldLabels", "excerpt_en"), type: "textarea" },
@@ -2235,6 +2236,8 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
             disabled={disabled}
           />
         ) : null}
+
+        {field.helperText ? <p className={styles.fieldHint}>{field.helperText}</p> : null}
       </label>
     );
   };
