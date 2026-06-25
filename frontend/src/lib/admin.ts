@@ -97,6 +97,28 @@ const getCookie = (name: string) => {
 
 const buildApiUrl = (path: string) => `${getApiBaseUrl()}${path}`;
 
+const stringifyErrorValue = (value: unknown): string[] => {
+  if (Array.isArray(value)) {
+    return value.flatMap((item) => stringifyErrorValue(item));
+  }
+
+  if (typeof value === "string") {
+    return [value];
+  }
+
+  if (value && typeof value === "object") {
+    return Object.entries(value).flatMap(([key, nestedValue]) =>
+      stringifyErrorValue(nestedValue).map((message) => `${key}: ${message}`),
+    );
+  }
+
+  if (value === null || value === undefined) {
+    return [];
+  }
+
+  return [String(value)];
+};
+
 const extractErrorDetail = async (response: Response) => {
   const payload = await response.json().catch(() => null as unknown);
 
@@ -123,6 +145,14 @@ const extractErrorDetail = async (response: Response) => {
 
   if ("non_field_errors" in payload && Array.isArray(payload.non_field_errors)) {
     return payload.non_field_errors.join(" ");
+  }
+
+  const fieldErrors = Object.entries(payload).flatMap(([key, value]) =>
+    stringifyErrorValue(value).map((message) => `${key}: ${message}`),
+  );
+
+  if (fieldErrors.length > 0) {
+    return fieldErrors.join(" ");
   }
 
   return `Request failed with status ${response.status}.`;

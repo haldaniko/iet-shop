@@ -536,6 +536,9 @@ const normalizeOrders = <T extends { order: number }>(items: T[]) =>
   }));
 
 const isCourseTab = (definition: ResourceDefinition | null) => definition?.key === "courses";
+const PROJECT_SLUG_PATTERN = /^[A-Za-z0-9_-]+$/;
+const PROJECT_SLUG_ERROR =
+  "Project short address must use English letters, numbers, hyphens, or underscores only. Example: my-project-1.";
 
 const REQUEST_RESOURCE_KEYS: AdminResourceKey[] = ["consultations", "event-requests", "orders"];
 const REQUEST_RESOURCE_KEY_SET = new Set<AdminResourceKey>(REQUEST_RESOURCE_KEYS);
@@ -1736,6 +1739,14 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
     try {
       const { payload, files } = buildPayloadFromForm(currentDefinition, formValues);
       const id = selectedRow?.id as string | number | undefined;
+
+      if (currentDefinition.key === "projects") {
+        const slug = typeof payload.slug === "string" ? payload.slug.trim() : "";
+        if (slug && !PROJECT_SLUG_PATTERN.test(slug)) {
+          setFormError(PROJECT_SLUG_ERROR);
+          return;
+        }
+      }
 
       if (isCourseTab(currentDefinition)) {
         let courseId: number;
