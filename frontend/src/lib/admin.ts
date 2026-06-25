@@ -123,7 +123,7 @@ const extractErrorDetail = async (response: Response) => {
   const payload = await response.json().catch(() => null as unknown);
 
   if (!payload || typeof payload !== "object") {
-    return `Request failed with status ${response.status}.`;
+    return `Заявката беше неуспешна със статус ${response.status}.`;
   }
 
   if ("detail" in payload && typeof payload.detail === "string") {
@@ -155,7 +155,7 @@ const extractErrorDetail = async (response: Response) => {
     return fieldErrors.join(" ");
   }
 
-  return `Request failed with status ${response.status}.`;
+  return `Заявката беше неуспешна със статус ${response.status}.`;
 };
 
 async function requestJson<T>(path: string, init: RequestInit = {}): Promise<T> {
@@ -256,7 +256,7 @@ async function ensureCsrfToken() {
   const token = data.csrfToken || getCookie("csrftoken");
 
   if (!token) {
-    throw new Error("CSRF token is missing.");
+    throw new Error("Липсва CSRF токен.");
   }
 
   return token;

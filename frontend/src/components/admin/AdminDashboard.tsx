@@ -539,7 +539,7 @@ const normalizeOrders = <T extends { order: number }>(items: T[]) =>
 const isCourseTab = (definition: ResourceDefinition | null) => definition?.key === "courses";
 const PROJECT_SLUG_PATTERN = /^[A-Za-z0-9_-]+$/;
 const PROJECT_SLUG_ERROR =
-  "Project short address must use English letters, numbers, hyphens, or underscores only. Example: my-project-1.";
+  "Краткият адрес трябва да бъде на английски: използвайте латински букви, цифри, тирета или долни черти. Пример: my-project-1.";
 
 const REQUEST_RESOURCE_KEYS: AdminResourceKey[] = ["consultations", "event-requests", "orders"];
 const REQUEST_RESOURCE_KEY_SET = new Set<AdminResourceKey>(REQUEST_RESOURCE_KEYS);
@@ -933,7 +933,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
       }
     } catch (error) {
       setResourceRows([]);
-      setResourceError(error instanceof Error ? error.message : "Failed to load resource.");
+      setResourceError(error instanceof Error ? error.message : "Неуспешно зареждане на ресурса.");
     } finally {
       setResourceLoading(false);
     }
@@ -955,7 +955,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
         return sessions.length > 0 ? sessions[0].id : null;
       });
     } catch (error) {
-      setChatSessionsError(error instanceof Error ? error.message : "Failed to load chat sessions.");
+      setChatSessionsError(error instanceof Error ? error.message : "Неуспешно зареждане на чат сесиите.");
     } finally {
       setChatSessionsLoading(false);
     }
@@ -986,7 +986,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
         [sessionId]: 0,
       }));
     } catch (error) {
-      setChatSendError(error instanceof Error ? error.message : "Failed to load session messages.");
+      setChatSendError(error instanceof Error ? error.message : "Неуспешно зареждане на съобщенията в сесията.");
     }
   }, []);
 
@@ -1129,7 +1129,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
         setCourseInstruments(instruments.length > 0 ? normalizeOrders(instruments) : [createInstrument(1)]);
         setCourseModules(modules.length > 0 ? normalizeOrders(modules) : [createModule(1)]);
       } catch (error) {
-        setFormError(error instanceof Error ? error.message : "Failed to load course inline blocks.");
+        setFormError(error instanceof Error ? error.message : "Неуспешно зареждане на допълнителните блокове на курса.");
         resetCourseComposition();
       }
     },
@@ -1431,7 +1431,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
         const created = await createAdminResource<Record<string, unknown>>("course-modules", payload);
         const createdId = toFiniteNumber(created.id);
         if (createdId === null) {
-          throw new Error("Unable to create course module.");
+          throw new Error("Неуспешно създаване на модул на курса.");
         }
         moduleId = createdId;
       }
@@ -1556,7 +1556,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
         try {
           payload = JSON.parse(event.data) as AdminChatSocketEvent;
         } catch {
-          setChatConnectionError("Failed to parse websocket event.");
+          setChatConnectionError("Неуспешно прочитане на събитието от websocket.");
           return;
         }
 
@@ -1756,7 +1756,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
           await updateAdminResource(currentDefinition.key, id, payload, files);
           const parsedId = toFiniteNumber(id);
           if (parsedId === null) {
-            throw new Error("Failed to resolve course ID for inline save.");
+            throw new Error("Неуспешно определяне на ID на курса при запазване.");
           }
           courseId = parsedId;
         } else {
@@ -1790,7 +1790,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
       setSelectedRow(null);
       setFormValues(buildInitialFormValues(currentDefinition, null));
     } catch (error) {
-      setFormError(error instanceof Error ? error.message : "Failed to save changes.");
+      setFormError(error instanceof Error ? error.message : "Неуспешно запазване на промените.");
     } finally {
       setIsSaving(false);
     }
@@ -1815,7 +1815,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
       setSelectedRow(null);
       setFormValues(buildInitialFormValues(currentDefinition, null));
     } catch (error) {
-      setFormError(error instanceof Error ? error.message : "Failed to delete record.");
+      setFormError(error instanceof Error ? error.message : "Неуспешно изтриване на записа.");
     } finally {
       setIsDeleting(false);
     }
@@ -1909,7 +1909,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
         [selectedChatSessionId]: 0,
       }));
     } catch (error) {
-      setChatSendError(error instanceof Error ? error.message : "Failed to send operator message.");
+      setChatSendError(error instanceof Error ? error.message : "Неуспешно изпращане на съобщението от оператора.");
     } finally {
       setChatSendPending(false);
     }
@@ -1932,7 +1932,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
       );
     } catch (error) {
       setChatSendError(
-        error instanceof Error ? error.message : "Failed to update chat session state.",
+        error instanceof Error ? error.message : "Неуспешно обновяване на състоянието на чат сесията.",
       );
     }
   };
