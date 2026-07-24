@@ -77,7 +77,7 @@ export const Header = () => {
                   <LanguageDropdown />
                 </div>
 
-                <Link href="/account" className={styles.actionIcon} onClick={closeMenu}>
+                <Link href="https://lms.obucheniya.com" className={styles.actionIcon} onClick={closeMenu}>
                   <IconUser />
                 </Link>
               </div>
