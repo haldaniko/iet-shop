@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
                 ('subject', models.CharField(max_length=255)),
                 ('description', models.TextField(blank=True, null=True)),
                 ('resolution', models.TextField(blank=True, null=True)),
-                ('status', models.CharField(choices=[('new', 'New'), ('in_progress', 'In progress'), ('waiting_customer', 'Waiting for customer'), ('resolved', 'Resolved'), ('closed', 'Closed')], default='new', max_length=20)),
-                ('priority', models.CharField(choices=[('low', 'Low'), ('normal', 'Normal'), ('high', 'High'), ('urgent', 'Urgent')], default='normal', max_length=10)),
+                ('status', models.CharField(choices=[('new', 'Нова'), ('in_progress', 'В работа'), ('waiting_customer', 'Изчаква клиент'), ('resolved', 'Решена'), ('closed', 'Затворена')], default='new', max_length=20)),
+                ('priority', models.CharField(choices=[('low', 'Нисък'), ('normal', 'Нормален'), ('high', 'Висок'), ('urgent', 'Спешен')], default='normal', max_length=10)),
                 ('assigned_to', models.CharField(blank=True, max_length=255, null=True)),
                 ('follow_up_at', models.DateTimeField(blank=True, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
@@ -31,6 +31,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ['-updated_at', '-created_at', '-id'],
+                'verbose_name': 'следпродажбен казус',
+                'verbose_name_plural': 'следпродажбено обслужване',
             },
         ),
     ]

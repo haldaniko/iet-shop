@@ -64,7 +64,7 @@ const translations: TranslationNode = {
       description: "Четене на данни за плащане.",
     },
     "after-sales-services": {
-      title: "Послепродажное обслуживание",
+      title: "Следпродажбено обслужване",
       description: "Проследяване на клиентски казуси след покупка.",
     },
   },

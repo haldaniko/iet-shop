@@ -72,17 +72,17 @@ class Order(models.Model):
 
 class AfterSalesServiceCase(models.Model):
     class Status(models.TextChoices):
-        NEW = "new", "New"
-        IN_PROGRESS = "in_progress", "In progress"
-        WAITING_CUSTOMER = "waiting_customer", "Waiting for customer"
-        RESOLVED = "resolved", "Resolved"
-        CLOSED = "closed", "Closed"
+        NEW = "new", "Нова"
+        IN_PROGRESS = "in_progress", "В работа"
+        WAITING_CUSTOMER = "waiting_customer", "Изчаква клиент"
+        RESOLVED = "resolved", "Решена"
+        CLOSED = "closed", "Затворена"
 
     class Priority(models.TextChoices):
-        LOW = "low", "Low"
-        NORMAL = "normal", "Normal"
-        HIGH = "high", "High"
-        URGENT = "urgent", "Urgent"
+        LOW = "low", "Нисък"
+        NORMAL = "normal", "Нормален"
+        HIGH = "high", "Висок"
+        URGENT = "urgent", "Спешен"
 
     order = models.ForeignKey(
         Order,
@@ -106,9 +106,11 @@ class AfterSalesServiceCase(models.Model):
 
     class Meta:
         ordering = ["-updated_at", "-created_at", "-id"]
+        verbose_name = "следпродажбен казус"
+        verbose_name_plural = "следпродажбено обслужване"
 
     def __str__(self):
-        return self.subject or f"After-sales case #{self.pk}"
+        return self.subject or f"Следпродажбен казус #{self.pk}"
 
 
 class Event(models.Model):
