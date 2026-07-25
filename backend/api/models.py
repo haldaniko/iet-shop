@@ -70,6 +70,47 @@ class Order(models.Model):
         return f"Order #{self.pk}"
 
 
+class AfterSalesServiceCase(models.Model):
+    class Status(models.TextChoices):
+        NEW = "new", "New"
+        IN_PROGRESS = "in_progress", "In progress"
+        WAITING_CUSTOMER = "waiting_customer", "Waiting for customer"
+        RESOLVED = "resolved", "Resolved"
+        CLOSED = "closed", "Closed"
+
+    class Priority(models.TextChoices):
+        LOW = "low", "Low"
+        NORMAL = "normal", "Normal"
+        HIGH = "high", "High"
+        URGENT = "urgent", "Urgent"
+
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="after_sales_cases",
+    )
+    customer_name = models.CharField(max_length=255)
+    customer_email = models.EmailField(null=True, blank=True)
+    customer_phone = models.CharField(max_length=30, null=True, blank=True)
+    subject = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    resolution = models.TextField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.NEW)
+    priority = models.CharField(max_length=10, choices=Priority.choices, default=Priority.NORMAL)
+    assigned_to = models.CharField(max_length=255, null=True, blank=True)
+    follow_up_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at", "-created_at", "-id"]
+
+    def __str__(self):
+        return self.subject or f"After-sales case #{self.pk}"
+
+
 class Event(models.Model):
     class EventType(models.TextChoices):
         ONLINE = "online", "Online"

@@ -26,6 +26,7 @@ from .chat_services import (
     get_or_create_chat_session,
 )
 from .models import (
+    AfterSalesServiceCase,
     ChatSession,
     Consultation,
     Course,
@@ -43,6 +44,7 @@ from .models import (
     Tag,
 )
 from .serializers import (
+    AdminAfterSalesServiceCaseSerializer,
     AdminChatSessionSerializer,
     AdminConsultationSerializer,
     AdminCourseAudienceTagCardSerializer,
@@ -340,6 +342,7 @@ class AdminDashboardStatsView(APIView):
                 'consultations': Consultation.objects.count(),
                 'event_requests': EventRequest.objects.count(),
                 'orders': Order.objects.count(),
+                'after_sales_services': AfterSalesServiceCase.objects.count(),
                 'chat_sessions': ChatSession.objects.count(),
                 'messages': Message.objects.count(),
             }
@@ -493,6 +496,12 @@ class AdminEventRequestViewSet(viewsets.ReadOnlyModelViewSet):
 class AdminOrderViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Order.objects.all().order_by('-id')
     serializer_class = AdminOrderSerializer
+    permission_classes = [IsSuperUser]
+
+
+class AdminAfterSalesServiceCaseViewSet(viewsets.ModelViewSet):
+    queryset = AfterSalesServiceCase.objects.select_related('order').all()
+    serializer_class = AdminAfterSalesServiceCaseSerializer
     permission_classes = [IsSuperUser]
 
 

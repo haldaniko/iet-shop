@@ -4,6 +4,7 @@ from django import forms
 from django.forms.models import BaseInlineFormSet
 
 from .models import (
+    AfterSalesServiceCase,
     ChatSession,
     Consultation,
     Course,
@@ -255,6 +256,39 @@ class OrderAdmin(admin.ModelAdmin):
 
     def has_view_permission(self, request, obj=None):
         return request.user.is_active and request.user.is_staff
+
+
+@admin.register(AfterSalesServiceCase)
+class AfterSalesServiceCaseAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "subject",
+        "customer_name",
+        "status",
+        "priority",
+        "assigned_to",
+        "follow_up_at",
+        "updated_at",
+    )
+    list_filter = ("status", "priority", "created_at", "updated_at")
+    search_fields = ("subject", "customer_name", "customer_email", "customer_phone", "description")
+    autocomplete_fields = ()
+    readonly_fields = ("created_at", "updated_at")
+    fields = (
+        "order",
+        "customer_name",
+        "customer_email",
+        "customer_phone",
+        "subject",
+        "description",
+        "resolution",
+        "status",
+        "priority",
+        "assigned_to",
+        "follow_up_at",
+        "created_at",
+        "updated_at",
+    )
 
 
 @admin.register(Event)

@@ -17,6 +17,19 @@ const translations: TranslationNode = {
     offline: "Лично",
     hybrid: "Хибриден",
   },
+  afterSalesStatuses: {
+    new: "Нова",
+    in_progress: "В работа",
+    waiting_customer: "Изчаква клиент",
+    resolved: "Решена",
+    closed: "Затворена",
+  },
+  afterSalesPriorities: {
+    low: "Нисък",
+    normal: "Нормален",
+    high: "Висок",
+    urgent: "Спешен",
+  },
   resources: {
     tags: {
       title: "Етикети",
@@ -49,6 +62,10 @@ const translations: TranslationNode = {
     orders: {
       title: "Поръчки",
       description: "Четене на данни за плащане.",
+    },
+    "after-sales-services": {
+      title: "Послепродажное обслуживание",
+      description: "Проследяване на клиентски казуси след покупка.",
     },
   },
   fieldLabels: {
@@ -98,6 +115,7 @@ const translations: TranslationNode = {
     phone: "Телефон",
     interested: "Интерес",
     status: "Платено",
+    case_status: "Статус",
     total_amount: "Обща сума",
     stripe_payment_intent_id: "ID на намерение за плащане в Stripe",
     stripe_checkout_session_id: "ID на checkout сесия в Stripe",
@@ -106,6 +124,16 @@ const translations: TranslationNode = {
     icon: "Икона",
     descriptions_en: "Описания (англ.)",
     descriptions_bg: "Описания (бълг.)",
+    order: "ID на поръчка",
+    customer_name: "Име на клиент",
+    customer_email: "Имейл на клиент",
+    customer_phone: "Телефон на клиент",
+    subject: "Тема",
+    description: "Описание",
+    resolution: "Решение",
+    priority: "Приоритет",
+    assigned_to: "Отговорник",
+    follow_up_at: "Последващо действие",
   },
   buttons: {
     save: "Запази",
@@ -143,6 +171,7 @@ const translations: TranslationNode = {
     message: "Съобщение",
     "select-tag": "Изберете етикет",
     "tag-ids": "ID на етикети: 1,2,3",
+    "order-id": "ID на поръчка",
   },
   messages: {
     "no-messages-yet": "Няма съобщения",
@@ -175,6 +204,7 @@ const translations: TranslationNode = {
     content: "Съдържание",
     requests: "Заявки",
     chats: "Чатове",
+    service: "Обслужване",
     details: "Детайли",
     "create-new": "Нов запис",
     edit: "Редактиране",

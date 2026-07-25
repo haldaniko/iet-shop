@@ -21,6 +21,7 @@ export interface AdminStats {
   consultations: number;
   event_requests: number;
   orders: number;
+  after_sales_services: number;
   chat_sessions: number;
   messages: number;
 }
@@ -55,6 +56,7 @@ export type AdminResourceKey =
   | "consultations"
   | "event-requests"
   | "orders"
+  | "after-sales-services"
   | "course-audience-tag-cards"
   | "course-instruments"
   | "course-outcomes"

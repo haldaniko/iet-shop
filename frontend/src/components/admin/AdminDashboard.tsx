@@ -211,7 +211,12 @@ const normalizeIdArray = (value: unknown): number[] => {
   return [];
 };
 
-const toTableValue = (value: unknown, fieldType?: FieldType, fieldName?: string): string => {
+const toTableValue = (
+  value: unknown,
+  fieldType?: FieldType,
+  fieldName?: string,
+  options?: FieldOption[],
+): string => {
   if (value === null || value === undefined || value === "") {
     return "-";
   }
@@ -225,6 +230,10 @@ const toTableValue = (value: unknown, fieldType?: FieldType, fieldName?: string)
   }
 
   if (typeof value === "string") {
+    if (fieldType === "select") {
+      return options?.find((option) => option.value === value)?.label ?? value;
+    }
+
     return formatDateByContext(value, fieldType, fieldName);
   }
 
@@ -601,6 +610,21 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
     { value: "hybrid", label: t("eventTypes", "hybrid") },
   ];
 
+  const afterSalesStatusOpts: FieldOption[] = [
+    { value: "new", label: t("afterSalesStatuses", "new") },
+    { value: "in_progress", label: t("afterSalesStatuses", "in_progress") },
+    { value: "waiting_customer", label: t("afterSalesStatuses", "waiting_customer") },
+    { value: "resolved", label: t("afterSalesStatuses", "resolved") },
+    { value: "closed", label: t("afterSalesStatuses", "closed") },
+  ];
+
+  const afterSalesPriorityOpts: FieldOption[] = [
+    { value: "low", label: t("afterSalesPriorities", "low") },
+    { value: "normal", label: t("afterSalesPriorities", "normal") },
+    { value: "high", label: t("afterSalesPriorities", "high") },
+    { value: "urgent", label: t("afterSalesPriorities", "urgent") },
+  ];
+
   return [
     {
       key: "tags",
@@ -751,6 +775,28 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
         { name: "paid_at", label: t("fieldLabels", "paid_at"), type: "datetime", readOnly: true },
       ],
     },
+    {
+      key: "after-sales-services",
+      title: t("resources.after-sales-services.title"),
+      description: t("resources.after-sales-services.description"),
+      columns: ["id", "subject", "customer_name", "status", "priority", "follow_up_at", "updated_at"],
+      fields: [
+        { name: "id", label: t("fieldLabels", "id"), type: "number", readOnly: true },
+        { name: "order", label: t("fieldLabels", "order"), type: "number", nullable: true, placeholder: t("placeholders", "order-id") },
+        { name: "customer_name", label: t("fieldLabels", "customer_name"), type: "text", required: true },
+        { name: "customer_email", label: t("fieldLabels", "customer_email"), type: "text", nullable: true },
+        { name: "customer_phone", label: t("fieldLabels", "customer_phone"), type: "text", nullable: true },
+        { name: "subject", label: t("fieldLabels", "subject"), type: "text", required: true },
+        { name: "description", label: t("fieldLabels", "description"), type: "textarea", nullable: true },
+        { name: "resolution", label: t("fieldLabels", "resolution"), type: "textarea", nullable: true },
+        { name: "status", label: t("fieldLabels", "case_status"), type: "select", options: afterSalesStatusOpts },
+        { name: "priority", label: t("fieldLabels", "priority"), type: "select", options: afterSalesPriorityOpts },
+        { name: "assigned_to", label: t("fieldLabels", "assigned_to"), type: "text", nullable: true },
+        { name: "follow_up_at", label: t("fieldLabels", "follow_up_at"), type: "datetime", nullable: true },
+        { name: "created_at", label: t("fieldLabels", "created_at"), type: "datetime", readOnly: true },
+        { name: "updated_at", label: t("fieldLabels", "updated_at"), type: "datetime", readOnly: true },
+      ],
+    },
   ];
 };
 
@@ -758,6 +804,7 @@ const NAV_GROUPS: Array<{ label: string; tabs: DashboardTab[] }> = [
   { label: "ui.main", tabs: ["operator-chat"] },
   { label: "ui.content", tabs: ["tags", "courses", "events", "posts", "projects"] },
   { label: "ui.requests", tabs: ["consultations", "event-requests", "orders"] },
+  { label: "ui.service", tabs: ["after-sales-services"] },
 ];
 
 const getTabLabel = (tab: DashboardTab, definitions: ResourceDefinition[], lang: Lang) => {
@@ -1983,6 +2030,16 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
     );
   }, [currentDefinition]);
 
+  const fieldOptionsByName = useMemo(() => {
+    if (!currentDefinition) {
+      return new Map<string, FieldOption[]>();
+    }
+
+    return new Map<string, FieldOption[]>(
+      currentDefinition.fields.map((field) => [field.name, field.options || []]),
+    );
+  }, [currentDefinition]);
+
   const renderDefinitionField = (field: FieldDefinition) => {
     const value = formValues[field.name];
     const disabled = !currentDefinition || currentDefinition.readOnly || field.readOnly || isSaving;
@@ -2497,7 +2554,12 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                           >
                             {visibleTableColumns.map((column) => (
                               <td key={column}>
-                                {toTableValue(row[column], fieldTypeByName.get(column), column)}
+                                {toTableValue(
+                                  row[column],
+                                  fieldTypeByName.get(column),
+                                  column,
+                                  fieldOptionsByName.get(column),
+                                )}
                               </td>
                             ))}
                           </tr>

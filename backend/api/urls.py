@@ -2,6 +2,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from .views import (
+    AdminAfterSalesServiceCaseViewSet,
     AdminChatSessionViewSet,
     AdminConsultationViewSet,
     AdminCourseAudienceTagCardViewSet,
@@ -56,6 +57,7 @@ admin_router.register('projects', AdminProjectViewSet, basename='admin-project')
 admin_router.register('consultations', AdminConsultationViewSet, basename='admin-consultation')
 admin_router.register('event-requests', AdminEventRequestViewSet, basename='admin-event-request')
 admin_router.register('orders', AdminOrderViewSet, basename='admin-order')
+admin_router.register('after-sales-services', AdminAfterSalesServiceCaseViewSet, basename='admin-after-sales-service')
 admin_router.register('course-audience-tag-cards', AdminCourseAudienceTagCardViewSet, basename='admin-course-audience-tag-card')
 admin_router.register('course-instruments', AdminCourseInstrumentViewSet, basename='admin-course-instrument')
 admin_router.register('course-outcomes', AdminCourseOutcomeViewSet, basename='admin-course-outcome')

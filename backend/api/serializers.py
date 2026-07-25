@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from .chat_services import create_message
 from .models import (
+    AfterSalesServiceCase,
     ChatSession,
     Consultation,
     Course,
@@ -526,6 +527,13 @@ class AdminOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+
+class AdminAfterSalesServiceCaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AfterSalesServiceCase
+        fields = '__all__'
+        read_only_fields = ['created_at', 'updated_at']
 
 
 class AdminCourseAudienceTagCardSerializer(serializers.ModelSerializer):
