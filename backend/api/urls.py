@@ -1,5 +1,6 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+from . import bot_api
 
 from .views import (
     AdminAfterSalesServiceCaseViewSet,
@@ -72,6 +73,11 @@ admin_router.register('messages', AdminMessageViewSet, basename='admin-message')
 
 
 urlpatterns = [
+    path('bot/v1/options/', bot_api.options),
+    path('bot/v1/articles/', bot_api.articles),
+    path('bot/v1/articles/<uuid:external_id>/', bot_api.article_detail),
+    path('bot/v1/articles/<uuid:external_id>/image/', bot_api.article_image),
+    path('bot/v1/articles/<uuid:external_id>/publish/', bot_api.article_publish),
     path('test/', TestView.as_view()),
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
     path('stripe/webhook/', StripeWebhookView.as_view(), name='stripe-webhook'),

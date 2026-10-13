@@ -150,7 +150,7 @@ class CreateCheckoutSessionView(APIView):
         try:
             checkout_session = create_checkout_session(
                 course,
-                request,
+                request._request,
                 customer_email=serializer.validated_data.get("customer_email"),
             )
         except stripe.error.StripeError as exc:
@@ -377,6 +377,12 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().prefetch_related("tags")
     serializer_class = PostSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.method in permissions.SAFE_METHODS:
+            queryset = queryset.filter(status="published")
+        return queryset
 
 
 class ProjectViewSet(viewsets.ModelViewSet):

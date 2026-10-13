@@ -135,14 +135,20 @@ class Event(models.Model):
 
 class Post(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
-    title_en = models.CharField(max_length=255, null=True, blank=True)
-    title_bg = models.CharField(max_length=255, null=True, blank=True)
+    title_en = models.CharField(max_length=300, null=True, blank=True)
+    title_bg = models.CharField(max_length=300, null=True, blank=True)
     author = models.CharField(max_length=255)
     content_en = models.TextField(null=True, blank=True)
     content_bg = models.TextField(null=True, blank=True)
     picture = models.ImageField(upload_to="posts/", null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
+    external_id = models.UUIDField(unique=True, null=True, blank=True)
+    bot_payload = models.JSONField(null=True, blank=True)
+    category_slugs = models.JSONField(default=list, blank=True)
+    summary = models.TextField(blank=True, default="")
+    status = models.CharField(max_length=10, choices=[("draft", "Draft"), ("published", "Published")], default="published")
+    published_at = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

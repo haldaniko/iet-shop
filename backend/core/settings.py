@@ -202,6 +202,9 @@ OPENROUTER_API_URL = os.getenv('OPENROUTER_API_URL', 'https://openrouter.ai/api/
 OPENROUTER_SITE_URL = os.getenv('OPENROUTER_SITE_URL', 'https://obucheniya.com')
 OPENROUTER_SITE_NAME = os.getenv('OPENROUTER_SITE_NAME', 'IET Shop Assistant')
 
+BOT_INTEGRATION_TOKEN = os.getenv('BOT_INTEGRATION_TOKEN', '')
+SITE_URL = os.getenv('SITE_URL', 'https://obucheniya.com')
+
 # Stripe (test mode) configuration.
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')

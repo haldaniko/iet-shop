@@ -386,7 +386,12 @@ export async function getCourseBySlug(slug: string): Promise<Course | undefined>
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | undefined> {
-  const posts = await getPosts();
+  const rawPosts = await safeFetch('/posts', { cache: 'no-store' });
+  const allTags = await getTags();
+  const posts: Post[] = (rawPosts || []).map((item: any) => {
+    const post = flattenData(item);
+    return { ...post, picture: resolveUrl(post.picture), tags: mapTags(post.tags, allTags) } as Post;
+  });
   const targetSlug = slug.toLowerCase().trim();
   return posts.find(p => p.slug?.toLowerCase().trim() === targetSlug);
 }

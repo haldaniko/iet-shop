@@ -1,5 +1,21 @@
 ### Deployment (Docker)
 
+### Editorial Telegram bot
+
+The backend exposes `https://obucheniya.com/api/bot/v1/` for the editorial bot. Set
+`BOT_INTEGRATION_TOKEN` and `SITE_URL=https://obucheniya.com` in the site's private
+`.env`; give the bot the same secret through `IET_SHOP_INTEGRATION_TOKEN`. The bot's
+`SITES_JSON` entry uses `id=iet-shop`, `name=IET Shop`, and
+`api_base=https://obucheniya.com/api/bot/v1/`. Do not commit either private `.env`.
+
+Run `python manage.py migrate` after deployment. The production entrypoint runs it
+automatically. The new migration adds draft and idempotency fields to the existing
+`Post` table. Bot posts appear in the existing blog only after publication, at
+`/bg/blog/<slug>`. Uploaded photos use the existing persistent `backend/media`
+volume in production. The site has no author directory, so `authors` is empty;
+category names and optional tags appear through the existing blog tag display.
+
+
 Проект запускается из корня через Docker Compose.
 
 #### Запуск (dev)
