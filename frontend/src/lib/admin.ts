@@ -410,12 +410,12 @@ export async function sendAdminOperatorMessage(chatSessionId: string, text: stri
   });
 }
 
-export async function uploadAdminProjectImage(file: File) {
+export async function uploadAdminContentImage(file: File) {
   const csrfToken = await ensureCsrfToken();
   const formData = new FormData();
   formData.set("image", file);
 
-  return requestJson<{ url: string }>("/api/admin/projects/upload-image/", {
+  return requestJson<{ url: string }>("/api/admin/content/upload-image/", {
     method: "POST",
     headers: {
       "X-CSRFToken": csrfToken,
@@ -423,6 +423,8 @@ export async function uploadAdminProjectImage(file: File) {
     body: formData,
   });
 }
+
+export const uploadAdminProjectImage = uploadAdminContentImage;
 
 export function buildAdminChatWebSocketUrl() {
   const apiBaseUrl = getApiBaseUrl();

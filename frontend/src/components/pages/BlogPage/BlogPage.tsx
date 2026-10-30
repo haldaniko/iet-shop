@@ -12,6 +12,8 @@ import { BlogCard } from "@/components/ui/BlogCard/BlogCard";
 import { CarouselNav } from "@/components/ui/CarouselNav/CarouselNav";
 import { translations } from "./translations";
 import { useBlog } from "@/lib/BlogContext";
+import { localizedRichText, richTextToPlainText } from "@/lib/richText";
+import { RichContentRenderer } from "@/components/ui/RichContentRenderer/RichContentRenderer";
 
 interface BlogPageProps {
     post?: Post;
@@ -23,6 +25,9 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
     const { selectedBlog } = useBlog();
 
     const [fetchedPost, setFetchedPost] = useState<Post | undefined | null>(undefined);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const carouselRef = useRef<HTMLDivElement>(null);
+    const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
     const postFromSource = React.useMemo(() => {
         const targetSlug = slug.toLowerCase().trim();
         if (selectedBlog && selectedBlog.slug?.toLowerCase().trim() === targetSlug) return selectedBlog;
@@ -45,11 +50,6 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
         loadRelated();
     }, [slug]);
 
-    // Carousel state
-    const [activeIndex, setActiveIndex] = useState(0);
-    const carouselRef = useRef<HTMLDivElement>(null);
-    const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
-
     const postTitle = (function () {
         const title = finalPost?.title;
         if (typeof title === 'string') return title;
@@ -57,30 +57,24 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
         return "";
     })();
 
-    const postContent = (function () {
-        const content = finalPost?.content;
-        if (typeof content === 'string') return content;
-        if (content && typeof content === 'object') return content[lang as keyof typeof content] || content.en || content.bg || "";
-        return "";
-    })();
+    const postContent = localizedRichText(finalPost?.content, lang);
 
     const breadcrumbs: BreadcrumbItem[] = [
         { label: t.blog, href: "/#blog" },
         { label: postTitle || slug }
     ];
 
-    const [formattedDate, setFormattedDate] = useState<string>("");
-
-    useEffect(() => {
+    const formattedDate = (() => {
         if (finalPost?.created_at) {
             const locale = lang === "bg" ? "bg-BG" : "en-GB";
-            setFormattedDate(new Date(finalPost.created_at).toLocaleDateString(locale, {
+            return new Date(finalPost.created_at).toLocaleDateString(locale, {
                 day: "2-digit",
                 month: "long",
                 year: "numeric",
-            }));
+            });
         }
-    }, [finalPost?.created_at, lang]);
+        return "";
+    })();
 
     // Carousel handlers
     const cardWidth = 509;
@@ -138,9 +132,9 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
 
                             <div className={styles.articleContentWrapper}>
                                 <h1 className={styles.title}>{postTitle}</h1>
-                                <p className={styles.content}>
-                                    {postContent}
-                                </p>
+                                <div className={styles.content}>
+                                    <RichContentRenderer content={postContent} />
+                                </div>
                             </div>
                         </>
                     )}
@@ -163,12 +157,7 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
                                             if (title && typeof title === 'object') return title[lang as keyof typeof title] || title.en || title.bg || "";
                                             return "";
                                         })();
-                                        const pContent = (function () {
-                                            const content = p.content;
-                                            if (typeof content === 'string') return content;
-                                            if (content && typeof content === 'object') return content[lang as keyof typeof content] || content.en || content.bg || "";
-                                            return "";
-                                        })();
+                                        const pContent = richTextToPlainText(localizedRichText(p.content, lang));
                                         return (
                                             <li key={p.id}>
                                                 <BlogCard

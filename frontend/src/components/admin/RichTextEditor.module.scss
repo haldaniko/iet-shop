@@ -27,7 +27,25 @@
       opacity: 0.55;
       cursor: not-allowed;
     }
+
+    &.active {
+      border-color: #245fae;
+      color: #ffffff;
+      background: #245fae;
+    }
   }
+}
+
+.fileInput {
+  display: none;
+}
+
+.uploadError {
+  padding: 8px 10px;
+  border-bottom: 1px solid #efb6b6;
+  color: #9f1d1d;
+  background: #fff0f0;
+  font-size: 13px;
 }
 
 .editorContent {
@@ -65,4 +83,17 @@
     margin: 10px 0;
     display: block;
   }
+
+  blockquote {
+    margin: 0 0 12px;
+    border-left: 4px solid #9fb4d7;
+    padding-left: 12px;
+  }
+}
+
+.hint {
+  padding: 7px 10px;
+  border-top: 1px solid rgba(28, 63, 112, 0.12);
+  color: #5a6d89;
+  font-size: 12px;
 }

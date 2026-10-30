@@ -465,8 +465,11 @@ class AdminProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [IsSuperUser]
 
 
-class AdminProjectImageUploadView(APIView):
+class AdminContentImageUploadView(APIView):
     permission_classes = [IsSuperUser]
+
+    MAX_IMAGE_SIZE = 10 * 1024 * 1024
+    ALLOWED_FORMATS = {"JPEG": "jpg", "PNG": "png", "WEBP": "webp", "GIF": "gif"}
 
     def post(self, request):
         image = request.FILES.get('image')
@@ -476,8 +479,34 @@ class AdminProjectImageUploadView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        extension = image.name.rsplit('.', 1)[-1].lower() if '.' in image.name else 'bin'
-        file_name = f"projects/content/{uuid.uuid4().hex}.{extension}"
+        if image.size > self.MAX_IMAGE_SIZE:
+            return Response(
+                {'detail': 'Image must be at most 10 MiB.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            from PIL import Image as PillowImage, UnidentifiedImageError
+
+            uploaded_position = image.tell()
+            source = PillowImage.open(image)
+            image_format = source.format
+            source.verify()
+            image.seek(uploaded_position)
+        except (UnidentifiedImageError, OSError, ValueError, PillowImage.DecompressionBombError):
+            return Response(
+                {'detail': 'The uploaded file is not a valid image.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        extension = self.ALLOWED_FORMATS.get(image_format)
+        if not extension:
+            return Response(
+                {'detail': 'Only JPEG, PNG, WebP, and GIF images are supported.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        file_name = f"content/images/{uuid.uuid4().hex}.{extension}"
         saved_path = default_storage.save(file_name, image)
         file_url = default_storage.url(saved_path)
 
@@ -485,6 +514,10 @@ class AdminProjectImageUploadView(APIView):
             {'url': request.build_absolute_uri(file_url)},
             status=status.HTTP_201_CREATED,
         )
+
+
+# Backwards-compatible name for older imports and clients.
+AdminProjectImageUploadView = AdminContentImageUploadView
 
 
 class AdminConsultationViewSet(viewsets.ReadOnlyModelViewSet):

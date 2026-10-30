@@ -65,20 +65,42 @@
     border-top: 1px solid #c8d7f3;
     margin: 22px 0;
   }
+
+  code {
+    border-radius: 5px;
+    padding: 2px 5px;
+    background: #e8eef8;
+    font-family: monospace;
+  }
+
+  pre {
+    overflow-x: auto;
+    margin: 0 0 22px;
+    border-radius: 10px;
+    padding: 14px;
+    background: #172033;
+    color: #f8fafc;
+
+    code {
+      padding: 0;
+      background: transparent;
+    }
+  }
 }
 
 .imageWrap {
   margin: 20px 0;
   border-radius: 20px;
-  overflow: hidden;
-  border: 1px solid #d8e1f2;
 }
 
 .image {
-  width: 100%;
+  max-width: 100%;
   height: auto;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
+  margin: 0 auto;
+  border-radius: 20px;
+  border: 1px solid #d8e1f2;
 }
 
 @media (max-width: 767px) {

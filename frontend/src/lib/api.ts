@@ -87,9 +87,9 @@ export interface Post {
   title_en?: string;
   title_bg?: string;
   author: string;
-  content?: LocalizedValue;
-  content_en?: string;
-  content_bg?: string;
+  content?: unknown;
+  content_en?: unknown;
+  content_bg?: unknown;
   picture?: string;
   created_at: string;
   tags: Tag[];

@@ -21,7 +21,7 @@ from .views import (
     AdminMeView,
     AdminMessageViewSet,
     AdminOrderViewSet,
-    AdminProjectImageUploadView,
+    AdminContentImageUploadView,
     AdminProjectViewSet,
     AdminPostViewSet,
     AdminTagViewSet,
@@ -88,7 +88,8 @@ urlpatterns = [
     path('admin/auth/logout/', AdminLogoutView.as_view(), name='admin-auth-logout'),
     path('admin/auth/me/', AdminMeView.as_view(), name='admin-auth-me'),
     path('admin/dashboard/stats/', AdminDashboardStatsView.as_view(), name='admin-dashboard-stats'),
-    path('admin/projects/upload-image/', AdminProjectImageUploadView.as_view(), name='admin-project-image-upload'),
+    path('admin/content/upload-image/', AdminContentImageUploadView.as_view(), name='admin-content-image-upload'),
+    path('admin/projects/upload-image/', AdminContentImageUploadView.as_view(), name='admin-project-image-upload'),
     path('admin/', include(admin_router.urls)),
 ]
 

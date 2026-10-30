@@ -1,7 +1,6 @@
 import React from 'react';
 import { Post } from '@/lib/api';
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
-import Image from 'next/image';
 import styles from './HeroSectionBlog.module.scss';
 
 import { useLanguage } from "@/lib/LanguageContext";
@@ -27,13 +26,11 @@ export const HeroSectionBlog = ({ post, formattedDate }: HeroSectionBlogProps) =
   return (
     <div className={styles.header}>
       <div className={styles.imageWrapper}>
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={post.picture || '/default-blog-image.jpg'}
           alt={title || ""}
-          width={1200}
-          height={600}
           className={styles.image}
-          priority
         />
       </div>
 

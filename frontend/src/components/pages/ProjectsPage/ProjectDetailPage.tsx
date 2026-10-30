@@ -129,13 +129,12 @@ export function ProjectDetailPage({ project, relatedProjects }: ProjectDetailPag
             <h1 className={styles.title}>{title || project.slug}</h1>
 
             <div className={styles.coverWrap}>
-              <Image
-                src={project.cover_image || projectFallback}
+              {/* The original dimensions are unknown, so native intrinsic sizing keeps portraits intact. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.cover_image || projectFallback.src}
                 alt={title || t.projectImageAlt}
-                width={1400}
-                height={760}
                 className={styles.coverImage}
-                sizes="(max-width: 768px) 100vw, 1200px"
               />
 
               {formattedDate ? <span className={styles.coverDate}>{formattedDate}</span> : null}

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import React from "react";
 
 import styles from "./RichContentRenderer.module.scss";
@@ -52,6 +51,11 @@ const renderTextNode = (node: JsonNode, key: string) => {
 
     if (mark.type === "strike") {
       element = <s key={`${key}-strike`}>{element}</s>;
+      continue;
+    }
+
+    if (mark.type === "code") {
+      element = <code key={`${key}-code`}>{element}</code>;
       continue;
     }
 
@@ -139,6 +143,10 @@ const renderNode = (node: JsonNode, key: string): React.ReactNode => {
     return <hr key={key} />;
   }
 
+  if (node.type === "codeBlock") {
+    return <pre key={key}><code>{renderInline(node.content, key)}</code></pre>;
+  }
+
   if (node.type === "image") {
     const src = typeof node.attrs?.src === "string" ? node.attrs.src : "";
     const alt = typeof node.attrs?.alt === "string" ? node.attrs.alt : "Project image";
@@ -149,7 +157,9 @@ const renderNode = (node: JsonNode, key: string): React.ReactNode => {
 
     return (
       <div key={key} className={styles.imageWrap}>
-        <Image src={src} alt={alt} width={1200} height={700} className={styles.image} />
+        {/* User-uploaded images have unknown dimensions; native intrinsic sizing preserves their ratio. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={alt} className={styles.image} loading="lazy" />
       </div>
     );
   }
@@ -161,7 +171,9 @@ export function RichContentRenderer({ content }: RichContentRendererProps) {
   const nodes = asNodes(content);
 
   if (nodes.length === 0) {
-    return null;
+    return typeof content === "string" && content.trim() ? (
+      <div className={styles.richContent}><p>{content}</p></div>
+    ) : null;
   }
 
   return <div className={styles.richContent}>{nodes.map((node, index) => renderNode(node, `node-${index}`))}</div>;

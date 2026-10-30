@@ -21,6 +21,20 @@ CATEGORIES = ({"slug": "news", "name": "Новини"}, {"slug": "guides", "name
 MAX_IMAGE = 10 * 1024 * 1024
 
 
+def rich_text_document(text):
+    paragraphs = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    return {
+        "type": "doc",
+        "content": [
+            {
+                "type": "paragraph",
+                **({"content": [{"type": "text", "text": paragraph}]} if paragraph else {}),
+            }
+            for paragraph in paragraphs
+        ] or [{"type": "paragraph"}],
+    }
+
+
 def error(message, code=400):
     return JsonResponse({"detail": message}, status=code)
 
@@ -107,7 +121,8 @@ def articles(request):
             post = Post.objects.create(
                 external_id=external_id, bot_payload=payload, slug=f"bot-{external_id}",
                 title_bg=payload["title"], title_en=payload["title"],
-                content_bg=payload["content"], content_en=payload["content"],
+                content_bg=rich_text_document(payload["content"]),
+                content_en=rich_text_document(payload["content"]),
                 summary=payload["summary"], category_slugs=payload["category_slugs"],
                 author="IET", status="draft",
             )

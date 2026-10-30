@@ -21,7 +21,7 @@ import {
   listAdminSessionMessages,
   sendAdminOperatorMessage,
   updateAdminResource,
-  uploadAdminProjectImage,
+  uploadAdminContentImage,
 } from "@/lib/admin";
 
 import type { Lang } from "@/lib/translations";
@@ -700,8 +700,8 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
         { name: "title_en", label: t("fieldLabels", "title_en"), type: "text" },
         { name: "title_bg", label: t("fieldLabels", "title_bg"), type: "text" },
         { name: "author", label: t("fieldLabels", "author"), type: "text", required: true },
-        { name: "content_en", label: t("fieldLabels", "content_en"), type: "textarea" },
-        { name: "content_bg", label: t("fieldLabels", "content_bg"), type: "textarea" },
+        { name: "content_en", label: t("fieldLabels", "content_en"), type: "richtext" },
+        { name: "content_bg", label: t("fieldLabels", "content_bg"), type: "richtext" },
         { name: "tags", label: t("fieldLabels", "tags"), type: "ids", placeholder: t("placeholders", "tag-ids") },
         { name: "picture", label: t("fieldLabels", "picture"), type: "file" },
         { name: "created_at", label: t("fieldLabels", "created_at"), type: "datetime" },
@@ -2067,7 +2067,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
             disabled={disabled}
             onChange={(nextValue) => handleFieldChange(field.name, nextValue)}
             onUploadImage={async (file) => {
-              const uploaded = await uploadAdminProjectImage(file);
+              const uploaded = await uploadAdminContentImage(file);
               return uploaded.url;
             }}
           />

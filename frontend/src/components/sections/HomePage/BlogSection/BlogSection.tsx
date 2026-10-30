@@ -8,6 +8,7 @@ import { useTranslate } from "@/lib/useTranslate";
 import { translationsTitle } from './translations';
 import { useSearchParams } from 'next/navigation';
 import { Post } from '@/lib/api';
+import { localizedRichText, richTextToPlainText } from '@/lib/richText';
 
 interface BlogSectionProps {
     posts?: Post[];
@@ -96,7 +97,8 @@ const BlogContent = ({ posts = [] }: BlogSectionProps) => {
                     <ul className={styles.blogList}>
                         {displayPosts.map((post) => {
                             const pTitle = asText(lang === 'bg' ? post.title_bg || post.title : post.title_en || post.title, lang);
-                            const pContent = asText(lang === 'bg' ? post.content_bg || post.content : post.content_en || post.content, lang);
+                            const localizedContent = lang === 'bg' ? post.content_bg || post.content : post.content_en || post.content;
+                            const pContent = richTextToPlainText(localizedRichText(localizedContent, lang));
                             return (
                                 <BlogCard
                                     key={post.id}
