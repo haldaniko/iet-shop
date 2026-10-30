@@ -45,6 +45,14 @@ export const BlogCard = ({
   const router = useRouter();
   const { lang } = useLanguage();
   const { setSelectedBlog } = useBlog();
+  const publicationDate = fullPost?.published_at || created_at;
+  const formattedDate = publicationDate
+    ? new Date(publicationDate).toLocaleDateString(lang === "bg" ? "bg-BG" : "en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
 
   const handleCardClick = () => {
     if (fullPost) {
@@ -94,6 +102,11 @@ export const BlogCard = ({
 
       <div className={styles.content}>
         <div className={styles.authorLabel}>{author}</div>
+        {formattedDate ? (
+          <time className={styles.publicationDate} dateTime={publicationDate}>
+            {lang === "bg" ? "Публикувано на" : "Published on"} {formattedDate}
+          </time>
+        ) : null}
         <h4 className={styles.title}>{title}</h4>
         {excerpt && <p className={styles.description}>{excerpt}</p>}
       </div>

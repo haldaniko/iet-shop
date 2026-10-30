@@ -256,6 +256,7 @@ class PostSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
             "content",
             "picture",
             "created_at",
+            "published_at",
             "tags",
             "tag_ids",
             "title_en",

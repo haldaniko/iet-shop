@@ -65,9 +65,10 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
     ];
 
     const formattedDate = (() => {
-        if (finalPost?.created_at) {
+        const publicationDate = finalPost?.published_at || finalPost?.created_at;
+        if (publicationDate) {
             const locale = lang === "bg" ? "bg-BG" : "en-GB";
-            return new Date(finalPost.created_at).toLocaleDateString(locale, {
+            return new Date(publicationDate).toLocaleDateString(locale, {
                 day: "2-digit",
                 month: "long",
                 year: "numeric",

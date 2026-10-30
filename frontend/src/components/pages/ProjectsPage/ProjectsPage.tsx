@@ -46,6 +46,17 @@ const toLocalizedText = (value: unknown, lang: "en" | "bg") => {
   return "";
 };
 
+const formatPublicationDate = (value: string | undefined, lang: "en" | "bg") => {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString(lang === "bg" ? "bg-BG" : "en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 export const ProjectsPage = ({ projects }: ProjectsPageProps) => {
   const { lang } = useLanguage();
   const t = translations[lang] ?? translations.bg;
@@ -56,6 +67,7 @@ export const ProjectsPage = ({ projects }: ProjectsPageProps) => {
         ...project,
         localizedTitle: toLocalizedText(project.title, lang),
         localizedExcerpt: toLocalizedText(project.excerpt, lang),
+        localizedPublicationDate: formatPublicationDate(project.created_at, lang),
       })),
     [lang, projects],
   );
@@ -99,6 +111,12 @@ export const ProjectsPage = ({ projects }: ProjectsPageProps) => {
                       </div>
 
                       <p className={styles.cardDescription}>{project.localizedExcerpt || "-"}</p>
+
+                      {project.localizedPublicationDate ? (
+                        <time className={styles.cardDate} dateTime={project.created_at}>
+                          {lang === "bg" ? "Публикувано на" : "Published on"} {project.localizedPublicationDate}
+                        </time>
+                      ) : null}
 
                       <div className={styles.imageWrap}>
                         <Image

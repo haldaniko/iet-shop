@@ -92,6 +92,7 @@ export interface Post {
   content_bg?: unknown;
   picture?: string;
   created_at: string;
+  published_at?: string | null;
   tags: Tag[];
 }
 
