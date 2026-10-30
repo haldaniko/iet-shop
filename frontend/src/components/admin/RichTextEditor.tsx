@@ -4,8 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Editor, EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
-import Underline from "@tiptap/extension-underline";
 
 import styles from "./RichTextEditor.module.scss";
 
@@ -20,6 +18,59 @@ interface RichTextEditorProps {
 }
 
 const EMPTY_DOC: JSONContent = { type: "doc", content: [{ type: "paragraph" }] };
+const PROXY_SAFE_IMAGE_SIZE = 800 * 1024;
+const MAX_IMAGE_DIMENSION = 2400;
+
+const canvasToBlob = (canvas: HTMLCanvasElement, quality: number) =>
+  new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => blob ? resolve(blob) : reject(new Error("The image could not be prepared for upload.")),
+      "image/webp",
+      quality,
+    );
+  });
+
+const prepareImageForUpload = async (file: File): Promise<File> => {
+  if (file.size <= PROXY_SAFE_IMAGE_SIZE) return file;
+
+  const objectUrl = URL.createObjectURL(file);
+  try {
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const element = document.createElement("img");
+      element.onload = () => resolve(element);
+      element.onerror = () => reject(new Error("The selected image could not be opened."));
+      element.src = objectUrl;
+    });
+
+    let scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(image.naturalWidth, image.naturalHeight));
+    let quality = 0.88;
+    let result: Blob | null = null;
+
+    for (let attempt = 0; attempt < 10; attempt += 1) {
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("The browser could not prepare the image for upload.");
+
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      result = await canvasToBlob(canvas, quality);
+      if (result.size <= PROXY_SAFE_IMAGE_SIZE) break;
+
+      if (quality > 0.5) quality -= 0.1;
+      else scale *= 0.8;
+    }
+
+    if (!result || result.size > PROXY_SAFE_IMAGE_SIZE) {
+      throw new Error("The image is too large to upload. Please choose a smaller image.");
+    }
+
+    const baseName = file.name.replace(/\.[^.]+$/, "") || "image";
+    return new File([result], `${baseName}.webp`, { type: "image/webp", lastModified: file.lastModified });
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+};
 
 const toEditorDoc = (value: RichTextValue) => {
   if (!value || typeof value !== "object" || value.type !== "doc") return EMPTY_DOC;
@@ -49,7 +100,8 @@ export function RichTextEditor({ value, disabled = false, placeholder, onChange,
 
     for (const file of images) {
       try {
-        const imageUrl = await uploadHandlerRef.current(file);
+        const preparedFile = await prepareImageForUpload(file);
+        const imageUrl = await uploadHandlerRef.current(preparedFile);
         const activeEditor = editorRef.current;
         if (!activeEditor) return;
         const chain = activeEditor.chain().focus();
@@ -66,9 +118,10 @@ export function RichTextEditor({ value, disabled = false, placeholder, onChange,
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      Underline,
-      Link.configure({ openOnClick: false, autolink: true, defaultProtocol: "https" }),
+      StarterKit.configure({
+        link: { openOnClick: false, autolink: true, defaultProtocol: "https" },
+        underline: {},
+      }),
       Image.configure({ allowBase64: false, HTMLAttributes: { loading: "lazy" } }),
     ],
     content: initialDoc,
